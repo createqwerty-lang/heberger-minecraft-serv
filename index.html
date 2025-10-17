@@ -959,141 +959,238 @@
     </div>
 
     <script>
-        let selectedPlan = {
-            name: '',
-            ram: ''
-        };
+// Remplacez par votre vraie URL Render !
+const API_URL = 'https://minecraft-backend-4s7j.onrender.com/api';
 
-        function showSection(section) {
-            document.getElementById('home-section').style.display = 'none';
-            document.getElementById('create-section').style.display = 'none';
-            document.getElementById('dashboard-section').style.display = 'none';
-            document.getElementById('status-section').style.display = 'none';
+let selectedPlan = {
+    name: '',
+    ram: ''
+};
 
-            if (section === 'home') {
-                document.getElementById('home-section').style.display = 'block';
-            } else if (section === 'create') {
-                document.getElementById('create-section').style.display = 'block';
-            } else if (section === 'dashboard') {
-                document.getElementById('dashboard-section').style.display = 'block';
-            } else if (section === 'status') {
-                document.getElementById('status-section').style.display = 'block';
-            }
+function showSection(section) {
+    document.getElementById('home-section').style.display = 'none';
+    document.getElementById('create-section').style.display = 'none';
+    document.getElementById('dashboard-section').style.display = 'none';
+    document.getElementById('status-section').style.display = 'none';
+
+    if (section === 'home') {
+        document.getElementById('home-section').style.display = 'block';
+    } else if (section === 'create') {
+        document.getElementById('create-section').style.display = 'block';
+    } else if (section === 'dashboard') {
+        document.getElementById('dashboard-section').style.display = 'block';
+        loadServers();
+    } else if (section === 'status') {
+        document.getElementById('status-section').style.display = 'block';
+    }
+}
+
+function showPublicStatus(serverIp) {
+    document.getElementById('server-ip-input').value = serverIp;
+    showSection('status');
+    checkServerStatus();
+}
+
+async function checkServerStatus() {
+    const serverIp = document.getElementById('server-ip-input').value.trim();
+    
+    if (!serverIp) {
+        alert('Veuillez entrer une adresse IP');
+        return;
+    }
+
+    // Hide all displays
+    document.getElementById('status-display').style.display = 'none';
+    document.getElementById('offline-display').style.display = 'none';
+    document.getElementById('starting-display').style.display = 'none';
+
+    try {
+        const response = await fetch(`${API_URL}/status/${encodeURIComponent(serverIp)}`);
+        const data = await response.json();
+        
+        if (data.status === 'online') {
+            document.getElementById('status-display').style.display = 'block';
+            document.getElementById('status-ip').textContent = serverIp;
+            document.getElementById('players-count').textContent = data.server.currentPlayers + '/' + data.server.maxPlayers;
+            document.getElementById('version-display').textContent = data.server.version;
+            document.getElementById('ping-display').textContent = data.server.ping + 'ms';
+            document.getElementById('server-description').textContent = data.server.description || 'Aucune description';
+        } else if (data.status === 'starting') {
+            document.getElementById('starting-display').style.display = 'block';
+            document.getElementById('starting-ip').textContent = serverIp;
+        } else {
+            document.getElementById('offline-display').style.display = 'block';
+            document.getElementById('offline-ip').textContent = serverIp;
         }
+    } catch (error) {
+        console.error('Erreur:', error);
+        document.getElementById('offline-display').style.display = 'block';
+        document.getElementById('offline-ip').textContent = serverIp;
+    }
+}
 
-        function showPublicStatus(serverIp) {
-            document.getElementById('server-ip-input').value = serverIp;
-            showSection('status');
-            checkServerStatus();
-        }
+function selectPlan(planName, ram) {
+    selectedPlan.name = planName;
+    selectedPlan.ram = ram;
+    document.getElementById('selected-plan-name').textContent = planName;
+    document.getElementById('selected-plan-ram').textContent = ram;
+    showSection('create');
+}
 
-        function checkServerStatus() {
-            const serverIp = document.getElementById('server-ip-input').value.trim();
-            
-            if (!serverIp) {
-                alert('Veuillez entrer une adresse IP');
-                return;
-            }
+function toggleModLoader() {
+    const serverType = document.getElementById('server-type').value;
+    const modloaderGroup = document.getElementById('modloader-version-group');
+    const modloaderLabel = document.getElementById('modloader-label');
+    const modloaderSelect = document.getElementById('modloader-version');
+    
+    // Hide all optgroups first
+    document.querySelectorAll('#modloader-version optgroup').forEach(group => {
+        group.style.display = 'none';
+    });
+    
+    // Reset selection
+    modloaderSelect.value = '';
+    
+    if (serverType === 'forge') {
+        modloaderGroup.style.display = 'flex';
+        modloaderLabel.textContent = 'Version de Forge';
+        // Show all Forge optgroups
+        document.getElementById('forge-121').style.display = 'block';
+        document.getElementById('forge-120').style.display = 'block';
+        document.getElementById('forge-119').style.display = 'block';
+        document.getElementById('forge-118').style.display = 'block';
+        document.getElementById('forge-117').style.display = 'block';
+        document.getElementById('forge-116').style.display = 'block';
+        document.getElementById('forge-115').style.display = 'block';
+        document.getElementById('forge-114').style.display = 'block';
+        document.getElementById('forge-113').style.display = 'block';
+        document.getElementById('forge-112').style.display = 'block';
+        document.getElementById('forge-111').style.display = 'block';
+        document.getElementById('forge-110').style.display = 'block';
+        document.getElementById('forge-19').style.display = 'block';
+        document.getElementById('forge-18').style.display = 'block';
+        document.getElementById('forge-17').style.display = 'block';
+        modloaderSelect.required = true;
+    } else if (serverType === 'fabric') {
+        modloaderGroup.style.display = 'flex';
+        modloaderLabel.textContent = 'Version de Fabric Loader';
+        document.getElementById('fabric-versions').style.display = 'block';
+        modloaderSelect.required = true;
+    } else if (serverType === 'neoforge') {
+        modloaderGroup.style.display = 'flex';
+        modloaderLabel.textContent = 'Version de NeoForge';
+        document.getElementById('neoforge-121').style.display = 'block';
+        document.getElementById('neoforge-120').style.display = 'block';
+        modloaderSelect.required = true;
+    } else if (serverType === 'quilt') {
+        modloaderGroup.style.display = 'flex';
+        modloaderLabel.textContent = 'Version de Quilt Loader';
+        document.getElementById('quilt-versions').style.display = 'block';
+        modloaderSelect.required = true;
+    } else {
+        modloaderGroup.style.display = 'none';
+        modloaderSelect.required = false;
+    }
+}
 
-            // Hide all displays
-            document.getElementById('status-display').style.display = 'none';
-            document.getElementById('offline-display').style.display = 'none';
-            document.getElementById('starting-display').style.display = 'none';
+async function createServer(event) {
+    event.preventDefault();
+    
+    const serverData = {
+        name: document.getElementById('server-name').value,
+        version: document.getElementById('mc-version').value,
+        serverType: document.getElementById('server-type').value,
+        modloaderVersion: document.getElementById('modloader-version').value,
+        gamemode: 'survival',
+        plan: selectedPlan.name,
+        description: document.querySelector('#create-server-form textarea').value
+    };
 
-            // Simulate different server states (in real app, this would be an API call)
-            const randomState = Math.random();
-            
-            if (randomState > 0.7) {
-                // Server online
-                document.getElementById('status-display').style.display = 'block';
-                document.getElementById('status-ip').textContent = serverIp;
-                document.getElementById('players-count').textContent = Math.floor(Math.random() * 50) + '/50';
-                document.getElementById('version-display').textContent = '1.21';
-                document.getElementById('ping-display').textContent = Math.floor(Math.random() * 100) + 'ms';
-            } else if (randomState > 0.4) {
-                // Server offline
-                document.getElementById('offline-display').style.display = 'block';
-                document.getElementById('offline-ip').textContent = serverIp;
-            } else {
-                // Server starting
-                document.getElementById('starting-display').style.display = 'block';
-                document.getElementById('starting-ip').textContent = serverIp;
-            }
-        }
+    try {
+        const response = await fetch(`${API_URL}/servers/create`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(serverData)
+        });
 
-        function selectPlan(planName, ram) {
-            selectedPlan.name = planName;
-            selectedPlan.ram = ram;
-            document.getElementById('selected-plan-name').textContent = planName;
-            document.getElementById('selected-plan-ram').textContent = ram;
-            showSection('create');
-        }
+        const data = await response.json();
 
-        function toggleModLoader() {
-            const serverType = document.getElementById('server-type').value;
-            const modloaderGroup = document.getElementById('modloader-version-group');
-            const modloaderLabel = document.getElementById('modloader-label');
-            const modloaderSelect = document.getElementById('modloader-version');
-            
-            // Hide all optgroups first
-            document.querySelectorAll('#modloader-version optgroup').forEach(group => {
-                group.style.display = 'none';
-            });
-            
-            // Reset selection
-            modloaderSelect.value = '';
-            
-            if (serverType === 'forge') {
-                modloaderGroup.style.display = 'flex';
-                modloaderLabel.textContent = 'Version de Forge';
-                // Show all Forge optgroups
-                document.getElementById('forge-121').style.display = 'block';
-                document.getElementById('forge-120').style.display = 'block';
-                document.getElementById('forge-119').style.display = 'block';
-                document.getElementById('forge-118').style.display = 'block';
-                document.getElementById('forge-117').style.display = 'block';
-                document.getElementById('forge-116').style.display = 'block';
-                document.getElementById('forge-115').style.display = 'block';
-                document.getElementById('forge-114').style.display = 'block';
-                document.getElementById('forge-113').style.display = 'block';
-                document.getElementById('forge-112').style.display = 'block';
-                document.getElementById('forge-111').style.display = 'block';
-                document.getElementById('forge-110').style.display = 'block';
-                document.getElementById('forge-19').style.display = 'block';
-                document.getElementById('forge-18').style.display = 'block';
-                document.getElementById('forge-17').style.display = 'block';
-                modloaderSelect.required = true;
-            } else if (serverType === 'fabric') {
-                modloaderGroup.style.display = 'flex';
-                modloaderLabel.textContent = 'Version de Fabric Loader';
-                document.getElementById('fabric-versions').style.display = 'block';
-                modloaderSelect.required = true;
-            } else if (serverType === 'neoforge') {
-                modloaderGroup.style.display = 'flex';
-                modloaderLabel.textContent = 'Version de NeoForge';
-                document.getElementById('neoforge-121').style.display = 'block';
-                document.getElementById('neoforge-120').style.display = 'block';
-                modloaderSelect.required = true;
-            } else if (serverType === 'quilt') {
-                modloaderGroup.style.display = 'flex';
-                modloaderLabel.textContent = 'Version de Quilt Loader';
-                document.getElementById('quilt-versions').style.display = 'block';
-                modloaderSelect.required = true;
-            } else {
-                modloaderGroup.style.display = 'none';
-                modloaderSelect.required = false;
-            }
-        }
-
-        function createServer(event) {
-            event.preventDefault();
+        if (data.success) {
             document.getElementById('success-modal').style.display = 'flex';
+            setTimeout(() => {
+                loadServers();
+            }, 1000);
+        } else {
+            alert('Erreur: ' + data.message);
         }
+    } catch (error) {
+        console.error('Erreur:', error);
+        alert('Erreur de connexion au serveur');
+    }
+}
 
-        function closeModal() {
-            document.getElementById('success-modal').style.display = 'none';
-            showSection('dashboard');
+function closeModal() {
+    document.getElementById('success-modal').style.display = 'none';
+    showSection('dashboard');
+}
+
+async function loadServers() {
+    try {
+        const response = await fetch(`${API_URL}/servers`);
+        const data = await response.json();
+        
+        if (data.success && data.servers.length > 0) {
+            const serversList = document.getElementById('servers-list');
+            serversList.innerHTML = '';
+            
+            data.servers.forEach(server => {
+                const statusClass = server.status === 'online' ? 'online' : server.status === 'starting' ? 'starting' : 'offline';
+                const statusText = server.status === 'online' ? '● En ligne' : server.status === 'starting' ? '● Démarrage' : '● Hors ligne';
+                
+                const serverHTML = `
+                    <div class="server-item">
+                        <div class="server-info">
+                            <h3>🏰 ${server.name}</h3>
+                            <p>Version ${server.version} • ${server.type} • Plan ${server.plan} (${server.ram} GB RAM) • ${server.currentPlayers}/${server.maxPlayers} joueurs</p>
+                            <p style="margin-top: 8px;"><strong>Adresse IP:</strong> <code style="background: #e2e8f0; padding: 5px 10px; border-radius: 5px; font-family: monospace;">${server.ip}</code></p>
+                            <span class="status ${statusClass}">${statusText}</span>
+                        </div>
+                        <div class="server-actions">
+                            <button class="btn-small btn-stop" onclick="stopServer('${server.id}')">Arrêter</button>
+                            <button class="btn-small btn-config" onclick="alert('Configuration en développement')">Configurer</button>
+                        </div>
+                    </div>
+                `;
+                serversList.innerHTML += serverHTML;
+            });
         }
-    </script>
+    } catch (error) {
+        console.error('Erreur lors du chargement des serveurs:', error);
+    }
+}
+
+async function stopServer(serverId) {
+    try {
+        const response = await fetch(`${API_URL}/servers/${serverId}/stop`, {
+            method: 'POST'
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('Serveur arrêté avec succès');
+            loadServers();
+        }
+    } catch (error) {
+        console.error('Erreur:', error);
+    }
+}
+
+// Charger les serveurs au chargement de la page
+document.addEventListener('DOMContentLoaded', () => {
+    loadServers();
+});
+    </script> 
 </body>
 </html>
