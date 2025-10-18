@@ -572,19 +572,7 @@
             <h2 class="section-title" style="color: #667eea;">Mes serveurs</h2>
 
             <div id="servers-list">
-                <div class="server-item">
-                    <div class="server-info">
-                        <h3>🏰 Mon Serveur Survie</h3>
-                        <p>Version 1.21 • Paper • Plan Super (8 GB RAM) • 32/50 joueurs</p>
-                        <p style="margin-top: 8px;"><strong>Adresse IP:</strong> <code style="background: #e2e8f0; padding: 5px 10px; border-radius: 5px; font-family: monospace;">play.mccloud.fr:25565</code></p>
-                        <p style="margin-top: 8px;"><strong>Lien public:</strong> <a href="#" onclick="showPublicStatus('play.mccloud.fr:25565'); return false;" style="color: #667eea; text-decoration: underline;">Voir la page de statut</a></p>
-                        <span class="status online">● En ligne</span>
-                    </div>
-                    <div class="server-actions">
-                        <button class="btn-small btn-stop" onclick="alert('Serveur arrêté')">Arrêter</button>
-                        <button class="btn-small btn-config" onclick="alert('Configuration en cours de développement')">Configurer</button>
-                    </div>
-                </div>
+                <!-- Les serveurs seront chargés dynamiquement ici -->
             </div>
 
             <div style="text-align: center; margin-top: 30px;">
@@ -889,6 +877,11 @@ async function stopServer(serverId) {
     } catch (error) {
         console.error('Erreur:', error);
     }
+}
+
+function openConsole(serverId) {
+    // Rediriger vers la console avec l'ID du serveur
+    window.location.href = `console.html?server=${serverId}`;
 }
 
 // Charger les serveurs au chargement de la page
