@@ -833,33 +833,75 @@ async function loadServers() {
         const response = await fetch(`${API_URL}/servers`);
         const data = await response.json();
         
+        const serversList = document.getElementById('servers-list');
+        
         if (data.success && data.servers.length > 0) {
-            const serversList = document.getElementById('servers-list');
             serversList.innerHTML = '';
             
             data.servers.forEach(server => {
-                const statusClass = server.status === 'online' ? 'online' : server.status === 'starting' ? 'starting' : 'offline';
-                const statusText = server.status === 'online' ? '● En ligne' : server.status === 'starting' ? '● Démarrage' : '● Hors ligne';
+                // Déterminer le statut avec classe CSS et texte
+                let statusClass = 'offline';
+                let statusText = '● Hors ligne';
+                
+                if (server.status === 'online') {
+                    statusClass = 'online';
+                    statusText = '● En ligne';
+                } else if (server.status === 'starting') {
+                    statusClass = 'starting';
+                    statusText = '● Démarrage';
+                }
+                
+                // Déterminer si on affiche "Plugins" ou "Mods"
+                let pluginsMods = '';
+                if (server.type === 'vanilla') {
+                    pluginsMods = 'Vanilla pur';
+                } else if (server.type === 'paper' || server.type === 'spigot' || server.type === 'bukkit' || server.type === 'purpur') {
+                    pluginsMods = 'Plugins supportés';
+                } else if (server.type === 'forge' || server.type === 'fabric' || server.type === 'neoforge' || server.type === 'quilt') {
+                    pluginsMods = 'Mods supportés';
+                    if (server.modloader) {
+                        pluginsMods += ` (${server.modloader})`;
+                    }
+                }
+                
+                // Capitaliser le type de serveur
+                const serverTypeName = server.type.charAt(0).toUpperCase() + server.type.slice(1);
                 
                 const serverHTML = `
                     <div class="server-item">
                         <div class="server-info">
                             <h3>🏰 ${server.name}</h3>
-                            <p>Version ${server.version} • ${server.type} • Plan ${server.plan} (${server.ram} GB RAM) • ${server.currentPlayers}/${server.maxPlayers} joueurs</p>
+                            <p>Version ${server.version} • ${serverTypeName} • Plan ${server.plan} (${server.ram} GB RAM)</p>
+                            <p style="margin-top: 5px; color: #718096; font-size: 0.9em;">${pluginsMods} • ${server.currentPlayers}/${server.maxPlayers} joueurs</p>
                             <p style="margin-top: 8px;"><strong>Adresse IP:</strong> <code style="background: #e2e8f0; padding: 5px 10px; border-radius: 5px; font-family: monospace;">${server.ip}</code></p>
+                            <p style="margin-top: 8px;"><strong>Lien public:</strong> <a href="#" onclick="showPublicStatus('${server.ip}'); return false;" style="color: #667eea; text-decoration: underline;">Voir la page de statut</a></p>
                             <span class="status ${statusClass}">${statusText}</span>
                         </div>
                         <div class="server-actions">
                             <button class="btn-small btn-stop" onclick="stopServer('${server.id}')">Arrêter</button>
-                            <button class="btn-small btn-config" onclick="openConsole('${server.id}')">Configurer</button>
+                            <button class="btn-small btn-config" onclick="window.location.href='console.html?server=${server.id}'">Configurer</button>
                         </div>
                     </div>
                 `;
                 serversList.innerHTML += serverHTML;
             });
+        } else {
+            serversList.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: #718096;">
+                    <p style="font-size: 1.2em; margin-bottom: 10px;">😊 Vous n'avez pas encore de serveur</p>
+                    <p>Créez votre premier serveur en choisissant un plan ci-dessus !</p>
+                </div>
+            `;
         }
     } catch (error) {
         console.error('Erreur lors du chargement des serveurs:', error);
+        const serversList = document.getElementById('servers-list');
+        serversList.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: #f56565;">
+                <p style="font-size: 1.2em; margin-bottom: 10px;">⚠️ Erreur de connexion</p>
+                <p>Impossible de charger vos serveurs. Vérifiez votre connexion.</p>
+            </div>
+        `;
     }
 }
 
