@@ -312,6 +312,40 @@
             font-size: 0.95em;
         }
 
+        .server-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .stat-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: 600;
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .stat-badge.cpu {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .stat-badge.ram {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            color: white;
+        }
+
+        .stat-badge.uptime {
+            background: linear-gradient(135deg, #fa709a, #fee140);
+            color: white;
+        }
+
         .status {
             display: inline-block;
             padding: 6px 15px;
@@ -324,6 +358,16 @@
         .status.online {
             background: #c6f6d5;
             color: #22543d;
+        }
+
+        .status.offline {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .status.starting {
+            background: #feebc8;
+            color: #7c2d12;
         }
 
         .server-actions {
