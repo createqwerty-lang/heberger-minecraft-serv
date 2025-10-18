@@ -478,6 +478,320 @@
                 </div>
             </div>
         </div>
+        <!-- Section FAQ - À ajouter dans votre index.html APRÈS la section Plans -->
+
+<style>
+.faq-item {
+    margin-bottom: 20px;
+    border: 2px solid #e2e8f0;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.faq-item:hover {
+    border-color: #667eea;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+}
+
+.faq-question {
+    width: 100%;
+    padding: 25px;
+    background: white;
+    border: none;
+    text-align: left;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #2d3748;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s;
+}
+
+.faq-question:hover {
+    background: #f7fafc;
+}
+
+.faq-arrow {
+    font-size: 1.5em;
+    transition: transform 0.3s;
+}
+
+.faq-arrow.open {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: #f7fafc;
+}
+
+.faq-answer.open {
+    max-height: 500px;
+}
+
+.faq-answer-content {
+    padding: 25px;
+    color: #4a5568;
+    line-height: 1.8;
+    font-size: 1.05em;
+}
+
+.how-it-works-card {
+    text-align: center;
+    padding: 30px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+}
+
+.how-it-works-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+}
+
+.feature-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-5px);
+}
+</style>
+
+<!-- Section Comment ça marche -->
+<div style="background: white; padding: 80px 20px; margin: 40px 0; border-radius: 25px;">
+    <div class="container">
+        <h2 style="text-align: center; color: #2d3748; font-size: 3em; margin-bottom: 60px;">
+            💡 Comment ça marche ?
+        </h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px;">
+            <div class="how-it-works-card">
+                <div style="font-size: 5em; margin-bottom: 20px;">1️⃣</div>
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.5em;">Choisissez un plan</h3>
+                <p style="color: #718096; line-height: 1.8;">
+                    Sélectionnez la configuration qui vous convient : Basique, Super ou Gamer
+                </p>
+            </div>
+
+            <div class="how-it-works-card">
+                <div style="font-size: 5em; margin-bottom: 20px;">2️⃣</div>
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.5em;">Configurez</h3>
+                <p style="color: #718096; line-height: 1.8;">
+                    Choisissez la version, les mods, les plugins et personnalisez selon vos besoins
+                </p>
+            </div>
+
+            <div class="how-it-works-card">
+                <div style="font-size: 5em; margin-bottom: 20px;">3️⃣</div>
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.5em;">Jouez !</h3>
+                <p style="color: #718096; line-height: 1.8;">
+                    Votre serveur démarre en quelques secondes. Partagez l'IP et invitez vos amis !
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Section Fonctionnalités -->
+<div style="padding: 80px 20px;">
+    <div class="container">
+        <h2 style="text-align: center; color: white; font-size: 3em; margin-bottom: 60px; text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);">
+            ⚡ Fonctionnalités puissantes
+        </h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+            <div class="feature-card">
+                <div style="font-size: 3em; margin-bottom: 15px;">🚀</div>
+                <h3 style="color: white; margin-bottom: 15px; font-size: 1.5em;">Démarrage instantané</h3>
+                <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.8;">
+                    Votre serveur démarre en moins de 30 secondes. Pas de file d'attente, pas de délai.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div style="font-size: 3em; margin-bottom: 15px;">🔧</div>
+                <h3 style="color: white; margin-bottom: 15px; font-size: 1.5em;">Personnalisation totale</h3>
+                <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.8;">
+                    Plugins, mods, versions : configurez votre serveur exactement comme vous le voulez.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div style="font-size: 3em; margin-bottom: 15px;">💻</div>
+                <h3 style="color: white; margin-bottom: 15px; font-size: 1.5em;">Console professionnelle</h3>
+                <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.8;">
+                    Gérez votre serveur avec une console en temps réel, logs et commandes inclus.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div style="font-size: 3em; margin-bottom: 15px;">📊</div>
+                <h3 style="color: white; margin-bottom: 15px; font-size: 1.5em;">Statistiques détaillées</h3>
+                <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.8;">
+                    Suivez l'utilisation CPU, RAM et le nombre de joueurs en temps réel.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div style="font-size: 3em; margin-bottom: 15px;">🛡️</div>
+                <h3 style="color: white; margin-bottom: 15px; font-size: 1.5em;">Protection DDoS</h3>
+                <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.8;">
+                    Votre serveur est protégé contre les attaques DDoS automatiquement.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div style="font-size: 3em; margin-bottom: 15px;">💾</div>
+                <h3 style="color: white; margin-bottom: 15px; font-size: 1.5em;">Sauvegardes automatiques</h3>
+                <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.8;">
+                    Vos mondes sont sauvegardés automatiquement. Restaurez-les en un clic.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Section FAQ -->
+<div style="background: white; padding: 80px 20px; margin: 40px 0; border-radius: 25px;">
+    <div class="container">
+        <h2 style="text-align: center; color: #2d3748; font-size: 3em; margin-bottom: 20px;">
+            ❓ Questions fréquentes
+        </h2>
+        <p style="text-align: center; color: #718096; font-size: 1.2em; margin-bottom: 60px;">
+            Trouvez les réponses à vos questions
+        </p>
+        
+        <div style="max-width: 900px; margin: 0 auto;">
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Est-ce vraiment gratuit ?</span>
+                    <span class="faq-arrow">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Oui ! MineCraft Cloud est 100% gratuit. Vous pouvez créer et gérer vos serveurs Minecraft sans aucun frais. Nous offrons trois plans gratuits (Basique, Super, Gamer) avec des configurations différentes pour répondre à tous les besoins.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Combien de serveurs puis-je créer ?</span>
+                    <span class="faq-arrow">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Vous pouvez créer autant de serveurs que vous le souhaitez ! Il n'y a pas de limite sur le nombre de serveurs. Vous pouvez avoir un serveur survie, un serveur créatif, et même tester différentes versions de Minecraft en parallèle.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Puis-je installer des mods et plugins ?</span>
+                    <span class="faq-arrow">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Absolument ! Vous pouvez installer tous les plugins et mods que vous voulez. Nous supportons Forge, Fabric, NeoForge, Quilt, Paper, Spigot et bien d'autres. Vous avez un accès complet aux fichiers de votre serveur pour personnaliser votre expérience.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Mon serveur sera-t-il en ligne 24/7 ?</span>
+                    <span class="faq-arrow">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Oui ! Votre serveur reste en ligne 24h/24 et 7j/7. Vous pouvez le démarrer et l'arrêter quand vous voulez depuis votre dashboard. Le serveur continuera de fonctionner même si vous fermez votre navigateur.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Quelle est la différence entre les plans ?</span>
+                    <span class="faq-arrow">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <strong>Basique (4GB RAM)</strong> : Parfait pour 1-20 joueurs, idéal pour jouer entre amis.<br><br>
+                        <strong>Super (8GB RAM)</strong> : Recommandé pour 20-50 joueurs avec mods et plugins.<br><br>
+                        <strong>Gamer (16GB RAM)</strong> : Pour les grosses communautés de 50-100+ joueurs avec de nombreux mods.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Mes données sont-elles sauvegardées ?</span>
+                    <span class="faq-arrow">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Oui ! Nous effectuons des sauvegardes automatiques régulières de votre monde. Les plans Basique ont des sauvegardes quotidiennes, Super des sauvegardes horaires, et Gamer des sauvegardes en temps réel. Vous pouvez restaurer votre monde à tout moment.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Comment mes amis peuvent-ils rejoindre mon serveur ?</span>
+                    <span class="faq-arrow">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        C'est simple ! Une fois votre serveur créé, vous recevrez une adresse IP (par exemple : play.mccloud.fr:25565). Partagez cette adresse avec vos amis. Ils peuvent l'ajouter dans leur liste de serveurs Minecraft et se connecter directement.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Y a-t-il des limitations ?</span>
+                    <span class="faq-arrow">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Les seules limitations sont la RAM et le nombre de joueurs selon le plan choisi. À part ça, vous avez un accès complet : installez ce que vous voulez, modifiez les fichiers, utilisez la console, et gérez votre serveur comme vous le souhaitez.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleFAQ(button) {
+    const answer = button.nextElementSibling;
+    const arrow = button.querySelector('.faq-arrow');
+    const isOpen = answer.classList.contains('open');
+
+    // Fermer toutes les autres FAQ
+    document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+    document.querySelectorAll('.faq-arrow').forEach(arr => arr.classList.remove('open'));
+
+    // Toggle celle-ci
+    if (!isOpen) {
+        answer.classList.add('open');
+        arrow.classList.add('open');
+    }
+}
+</script>
 
         <!-- Section Création de serveur -->
         <div id="create-section" class="create-server-section">
