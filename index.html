@@ -473,7 +473,6 @@
     </div>
 
     <div class="container">
-        <!-- Section Plans -->
         <div id="home-section">
             <h2 class="section-title">Choisissez votre configuration</h2>
             <div class="plans">
@@ -524,7 +523,6 @@
             </div>
         </div>
 
-        <!-- Section Création de serveur -->
         <div id="create-section" class="create-server-section">
             <h2 class="section-title" style="color: #667eea;">Créer votre serveur</h2>
             
@@ -571,6 +569,8 @@
                             <option value="spigot">Spigot</option>
                             <option value="forge">Forge (Mods)</option>
                             <option value="fabric">Fabric (Mods)</option>
+                            <option value="neoforge">NeoForge (Mods)</option>
+                            <option value="quilt">Quilt (Mods)</option>
                         </select>
                     </div>
 
@@ -578,20 +578,340 @@
                         <label id="modloader-label">Version du Mod Loader</label>
                         <select id="modloader-version">
                             <option value="">Sélectionnez une version</option>
-                            <optgroup label="Forge" id="forge-versions" style="display: none;">
-                                <option value="forge-47.4.0">Forge 47.4.0 (1.20.1)</option>
-                                <option value="forge-47.3.0">Forge 47.3.0 (1.20.1)</option>
+                            <optgroup label="Forge 1.21.4" id="forge-2114" style="display: none;">
+                                <option value="forge-52.0.26">Forge 52.0.26 (Recommandée)</option>
+                                <option value="forge-52.0.25">Forge 52.0.25</option>
+                                <option value="forge-52.0.24">Forge 52.0.24</option>
+                                <option value="forge-52.0.23">Forge 52.0.23</option>
+                                <option value="forge-52.0.22">Forge 52.0.22</option>
+                                <option value="forge-52.0.21">Forge 52.0.21</option>
+                                <option value="forge-52.0.20">Forge 52.0.20</option>
                             </optgroup>
-                            <optgroup label="Fabric" id="fabric-versions" style="display: none;">
-                                <option value="fabric-0.16.9">Fabric 0.16.9</option>
-                                <option value="fabric-0.16.7">Fabric 0.16.7</option>
+                            <optgroup label="Forge 1.21.3" id="forge-2113" style="display: none;">
+                                <option value="forge-52.0.19">Forge 52.0.19 (Recommandée)</option>
+                                <option value="forge-52.0.18">Forge 52.0.18</option>
+                                <option value="forge-52.0.17">Forge 52.0.17</option>
+                                <option value="forge-52.0.16">Forge 52.0.16</option>
+                                <option value="forge-52.0.15">Forge 52.0.15</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.21.1" id="forge-2111" style="display: none;">
+                                <option value="forge-52.0.14">Forge 52.0.14 (Recommandée)</option>
+                                <option value="forge-52.0.13">Forge 52.0.13</option>
+                                <option value="forge-52.0.12">Forge 52.0.12</option>
+                                <option value="forge-51.0.33">Forge 51.0.33</option>
+                                <option value="forge-51.0.32">Forge 51.0.32</option>
+                                <option value="forge-51.0.31">Forge 51.0.31</option>
+                                <option value="forge-51.0.30">Forge 51.0.30</option>
+                                <option value="forge-51.0.29">Forge 51.0.29</option>
+                                <option value="forge-51.0.28">Forge 51.0.28</option>
+                                <option value="forge-51.0.27">Forge 51.0.27</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.21.0" id="forge-2110" style="display: none;">
+                                <option value="forge-51.0.22">Forge 51.0.22 (Recommandée)</option>
+                                <option value="forge-51.0.21">Forge 51.0.21</option>
+                                <option value="forge-51.0.20">Forge 51.0.20</option>
+                                <option value="forge-49.1.0">Forge 49.1.0</option>
+                                <option value="forge-49.0.50">Forge 49.0.50</option>
+                                <option value="forge-49.0.48">Forge 49.0.48</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.20.6" id="forge-2006" style="display: none;">
+                                <option value="forge-50.1.14">Forge 50.1.14 (Recommandée)</option>
+                                <option value="forge-50.1.13">Forge 50.1.13</option>
+                                <option value="forge-50.1.12">Forge 50.1.12</option>
+                                <option value="forge-50.1.11">Forge 50.1.11</option>
+                                <option value="forge-50.1.10">Forge 50.1.10</option>
+                                <option value="forge-50.1.9">Forge 50.1.9</option>
+                                <option value="forge-50.1.8">Forge 50.1.8</option>
+                                <option value="forge-50.1.7">Forge 50.1.7</option>
+                                <option value="forge-50.1.6">Forge 50.1.6</option>
+                                <option value="forge-50.1.5">Forge 50.1.5</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.20.5" id="forge-2005" style="display: none;">
+                                <option value="forge-50.1.0">Forge 50.1.0 (Recommandée)</option>
+                                <option value="forge-50.0.29">Forge 50.0.29</option>
+                                <option value="forge-50.0.28">Forge 50.0.28</option>
+                                <option value="forge-50.0.27">Forge 50.0.27</option>
+                                <option value="forge-50.0.26">Forge 50.0.26</option>
+                                <option value="forge-50.0.25">Forge 50.0.25</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.20.4" id="forge-2004" style="display: none;">
+                                <option value="forge-49.1.4">Forge 49.1.4 (Recommandée)</option>
+                                <option value="forge-49.1.3">Forge 49.1.3</option>
+                                <option value="forge-49.1.2">Forge 49.1.2</option>
+                                <option value="forge-49.1.1">Forge 49.1.1</option>
+                                <option value="forge-49.0.50">Forge 49.0.50</option>
+                                <option value="forge-49.0.49">Forge 49.0.49</option>
+                                <option value="forge-49.0.48">Forge 49.0.48</option>
+                                <option value="forge-49.0.47">Forge 49.0.47</option>
+                                <option value="forge-49.0.46">Forge 49.0.46</option>
+                                <option value="forge-49.0.45">Forge 49.0.45</option>
+                                <option value="forge-49.0.44">Forge 49.0.44</option>
+                                <option value="forge-49.0.43">Forge 49.0.43</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.20.3" id="forge-2003" style="display: none;">
+                                <option value="forge-49.0.31">Forge 49.0.31 (Recommandée)</option>
+                                <option value="forge-49.0.30">Forge 49.0.30</option>
+                                <option value="forge-49.0.29">Forge 49.0.29</option>
+                                <option value="forge-49.0.28">Forge 49.0.28</option>
+                                <option value="forge-49.0.27">Forge 49.0.27</option>
+                                <option value="forge-49.0.26">Forge 49.0.26</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.20.2" id="forge-2002" style="display: none;">
+                                <option value="forge-48.1.0">Forge 48.1.0 (Recommandée)</option>
+                                <option value="forge-48.0.49">Forge 48.0.49</option>
+                                <option value="forge-48.0.48">Forge 48.0.48</option>
+                                <option value="forge-48.0.47">Forge 48.0.47</option>
+                                <option value="forge-48.0.46">Forge 48.0.46</option>
+                                <option value="forge-48.0.45">Forge 48.0.45</option>
+                                <option value="forge-48.0.44">Forge 48.0.44</option>
+                                <option value="forge-48.0.43">Forge 48.0.43</option>
+                                <option value="forge-48.0.42">Forge 48.0.42</option>
+                                <option value="forge-48.0.41">Forge 48.0.41</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.20.1" id="forge-2001" style="display: none;">
+                                <option value="forge-47.4.0">Forge 47.4.0 (Recommandée)</option>
+                                <option value="forge-47.3.11">Forge 47.3.11</option>
+                                <option value="forge-47.3.10">Forge 47.3.10</option>
+                                <option value="forge-47.3.9">Forge 47.3.9</option>
+                                <option value="forge-47.3.8">Forge 47.3.8</option>
+                                <option value="forge-47.3.7">Forge 47.3.7</option>
+                                <option value="forge-47.3.6">Forge 47.3.6</option>
+                                <option value="forge-47.3.5">Forge 47.3.5</option>
+                                <option value="forge-47.3.4">Forge 47.3.4</option>
+                                <option value="forge-47.3.3">Forge 47.3.3</option>
+                                <option value="forge-47.3.2">Forge 47.3.2</option>
+                                <option value="forge-47.3.1">Forge 47.3.1</option>
+                                <option value="forge-47.3.0">Forge 47.3.0</option>
+                                <option value="forge-47.2.0">Forge 47.2.0</option>
+                                <option value="forge-47.1.0">Forge 47.1.0</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.20.0" id="forge-2000" style="display: none;">
+                                <option value="forge-46.0.14">Forge 46.0.14 (Recommandée)</option>
+                                <option value="forge-46.0.13">Forge 46.0.13</option>
+                                <option value="forge-46.0.12">Forge 46.0.12</option>
+                                <option value="forge-46.0.11">Forge 46.0.11</option>
+                                <option value="forge-46.0.10">Forge 46.0.10</option>
+                                <option value="forge-46.0.9">Forge 46.0.9</option>
+                                <option value="forge-46.0.8">Forge 46.0.8</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.19.4" id="forge-1194" style="display: none;">
+                                <option value="forge-45.3.0">Forge 45.3.0 (Recommandée)</option>
+                                <option value="forge-45.2.11">Forge 45.2.11</option>
+                                <option value="forge-45.2.10">Forge 45.2.10</option>
+                                <option value="forge-45.2.9">Forge 45.2.9</option>
+                                <option value="forge-45.2.8">Forge 45.2.8</option>
+                                <option value="forge-45.2.7">Forge 45.2.7</option>
+                                <option value="forge-45.2.6">Forge 45.2.6</option>
+                                <option value="forge-45.2.5">Forge 45.2.5</option>
+                                <option value="forge-45.2.4">Forge 45.2.4</option>
+                                <option value="forge-45.2.3">Forge 45.2.3</option>
+                                <option value="forge-45.2.2">Forge 45.2.2</option>
+                                <option value="forge-45.2.1">Forge 45.2.1</option>
+                                <option value="forge-45.2.0">Forge 45.2.0</option>
+                                <option value="forge-45.1.0">Forge 45.1.0</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.19.3" id="forge-1193" style="display: none;">
+                                <option value="forge-44.1.23">Forge 44.1.23 (Recommandée)</option>
+                                <option value="forge-44.1.22">Forge 44.1.22</option>
+                                <option value="forge-44.1.21">Forge 44.1.21</option>
+                                <option value="forge-44.1.20">Forge 44.1.20</option>
+                                <option value="forge-44.1.19">Forge 44.1.19</option>
+                                <option value="forge-44.1.18">Forge 44.1.18</option>
+                                <option value="forge-44.1.17">Forge 44.1.17</option>
+                                <option value="forge-44.1.16">Forge 44.1.16</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.19.2" id="forge-1192" style="display: none;">
+                                <option value="forge-43.4.4">Forge 43.4.4 (Recommandée)</option>
+                                <option value="forge-43.4.3">Forge 43.4.3</option>
+                                <option value="forge-43.4.2">Forge 43.4.2</option>
+                                <option value="forge-43.4.1">Forge 43.4.1</option>
+                                <option value="forge-43.4.0">Forge 43.4.0</option>
+                                <option value="forge-43.3.13">Forge 43.3.13</option>
+                                <option value="forge-43.3.12">Forge 43.3.12</option>
+                                <option value="forge-43.3.11">Forge 43.3.11</option>
+                                <option value="forge-43.3.10">Forge 43.3.10</option>
+                                <option value="forge-43.3.9">Forge 43.3.9</option>
+                                <option value="forge-43.3.8">Forge 43.3.8</option>
+                                <option value="forge-43.3.7">Forge 43.3.7</option>
+                                <option value="forge-43.3.6">Forge 43.3.6</option>
+                                <option value="forge-43.3.5">Forge 43.3.5</option>
+                                <option value="forge-43.3.0">Forge 43.3.0</option>
+                                <option value="forge-43.2.0">Forge 43.2.0</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.19.1" id="forge-1191" style="display: none;">
+                                <option value="forge-42.0.9">Forge 42.0.9 (Recommandée)</option>
+                                <option value="forge-42.0.8">Forge 42.0.8</option>
+                                <option value="forge-42.0.7">Forge 42.0.7</option>
+                                <option value="forge-42.0.6">Forge 42.0.6</option>
+                                <option value="forge-42.0.5">Forge 42.0.5</option>
+                                <option value="forge-42.0.4">Forge 42.0.4</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.19.0" id="forge-1190" style="display: none;">
+                                <option value="forge-41.1.0">Forge 41.1.0 (Recommandée)</option>
+                                <option value="forge-41.0.110">Forge 41.0.110</option>
+                                <option value="forge-41.0.109">Forge 41.0.109</option>
+                                <option value="forge-41.0.108">Forge 41.0.108</option>
+                                <option value="forge-41.0.107">Forge 41.0.107</option>
+                                <option value="forge-41.0.106">Forge 41.0.106</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.18.2" id="forge-1182" style="display: none;">
+                                <option value="forge-40.2.21">Forge 40.2.21 (Recommandée)</option>
+                                <option value="forge-40.2.20">Forge 40.2.20</option>
+                                <option value="forge-40.2.19">Forge 40.2.19</option>
+                                <option value="forge-40.2.18">Forge 40.2.18</option>
+                                <option value="forge-40.2.17">Forge 40.2.17</option>
+                                <option value="forge-40.2.16">Forge 40.2.16</option>
+                                <option value="forge-40.2.15">Forge 40.2.15</option>
+                                <option value="forge-40.2.14">Forge 40.2.14</option>
+                                <option value="forge-40.2.10">Forge 40.2.10</option>
+                                <option value="forge-40.2.9">Forge 40.2.9</option>
+                                <option value="forge-40.2.8">Forge 40.2.8</option>
+                                <option value="forge-40.2.7">Forge 40.2.7</option>
+                                <option value="forge-40.2.6">Forge 40.2.6</option>
+                                <option value="forge-40.2.5">Forge 40.2.5</option>
+                                <option value="forge-40.2.4">Forge 40.2.4</option>
+                                <option value="forge-40.2.3">Forge 40.2.3</option>
+                                <option value="forge-40.2.2">Forge 40.2.2</option>
+                                <option value="forge-40.2.1">Forge 40.2.1</option>
+                                <option value="forge-40.2.0">Forge 40.2.0</option>
+                                <option value="forge-40.1.0">Forge 40.1.0</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.18.1" id="forge-1181" style="display: none;">
+                                <option value="forge-39.1.2">Forge 39.1.2 (Recommandée)</option>
+                                <option value="forge-39.1.1">Forge 39.1.1</option>
+                                <option value="forge-39.1.0">Forge 39.1.0</option>
+                                <option value="forge-39.0.88">Forge 39.0.88</option>
+                                <option value="forge-39.0.87">Forge 39.0.87</option>
+                                <option value="forge-39.0.86">Forge 39.0.86</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.18.0" id="forge-1180" style="display: none;">
+                                <option value="forge-38.0.17">Forge 38.0.17 (Recommandée)</option>
+                                <option value="forge-38.0.16">Forge 38.0.16</option>
+                                <option value="forge-38.0.15">Forge 38.0.15</option>
+                                <option value="forge-38.0.14">Forge 38.0.14</option>
+                                <option value="forge-38.0.13">Forge 38.0.13</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.17.1" id="forge-1171" style="display: none;">
+                                <option value="forge-37.1.1">Forge 37.1.1 (Recommandée)</option>
+                                <option value="forge-37.1.0">Forge 37.1.0</option>
+                                <option value="forge-37.0.112">Forge 37.0.112</option>
+                                <option value="forge-37.0.111">Forge 37.0.111</option>
+                                <option value="forge-37.0.110">Forge 37.0.110</option>
+                                <option value="forge-37.0.109">Forge 37.0.109</option>
+                                <option value="forge-37.0.108">Forge 37.0.108</option>
+                                <option value="forge-37.0.107">Forge 37.0.107</option>
+                                <option value="forge-37.0.106">Forge 37.0.106</option>
+                                <option value="forge-37.0.105">Forge 37.0.105</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.16.5" id="forge-1165" style="display: none;">
+                                <option value="forge-36.2.39">Forge 36.2.39 (Recommandée)</option>
+                                <option value="forge-36.2.38">Forge 36.2.38</option>
+                                <option value="forge-36.2.37">Forge 36.2.37</option>
+                                <option value="forge-36.2.36">Forge 36.2.36</option>
+                                <option value="forge-36.2.35">Forge 36.2.35</option>
+                                <option value="forge-36.2.34">Forge 36.2.34</option>
+                                <option value="forge-36.2.33">Forge 36.2.33</option>
+                                <option value="forge-36.2.32">Forge 36.2.32</option>
+                                <option value="forge-36.2.31">Forge 36.2.31</option>
+                                <option value="forge-36.2.30">Forge 36.2.30</option>
+                                <option value="forge-36.2.29">Forge 36.2.29</option>
+                                <option value="forge-36.2.28">Forge 36.2.28</option>
+                                <option value="forge-36.2.27">Forge 36.2.27</option>
+                                <option value="forge-36.2.26">Forge 36.2.26</option>
+                                <option value="forge-36.2.25">Forge 36.2.25</option>
+                                <option value="forge-36.2.24">Forge 36.2.24</option>
+                                <option value="forge-36.2.23">Forge 36.2.23</option>
+                                <option value="forge-36.2.22">Forge 36.2.22</option>
+                                <option value="forge-36.2.21">Forge 36.2.21</option>
+                                <option value="forge-36.2.20">Forge 36.2.20</option>
+                                <option value="forge-36.2.19">Forge 36.2.19</option>
+                                <option value="forge-36.2.18">Forge 36.2.18</option>
+                                <option value="forge-36.2.17">Forge 36.2.17</option>
+                                <option value="forge-36.2.16">Forge 36.2.16</option>
+                                <option value="forge-36.2.15">Forge 36.2.15</option>
+                                <option value="forge-36.2.14">Forge 36.2.14</option>
+                                <option value="forge-36.2.13">Forge 36.2.13</option>
+                                <option value="forge-36.2.12">Forge 36.2.12</option>
+                                <option value="forge-36.2.11">Forge 36.2.11</option>
+                                <option value="forge-36.2.10">Forge 36.2.10</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.16.4" id="forge-1164" style="display: none;">
+                                <option value="forge-35.1.37">Forge 35.1.37 (Recommandée)</option>
+                                <option value="forge-35.1.36">Forge 35.1.36</option>
+                                <option value="forge-35.1.35">Forge 35.1.35</option>
+                                <option value="forge-35.1.34">Forge 35.1.34</option>
+                                <option value="forge-35.1.33">Forge 35.1.33</option>
+                                <option value="forge-35.1.32">Forge 35.1.32</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.16.3" id="forge-1163" style="display: none;">
+                                <option value="forge-34.1.42">Forge 34.1.42 (Recommandée)</option>
+                                <option value="forge-34.1.41">Forge 34.1.41</option>
+                                <option value="forge-34.1.40">Forge 34.1.40</option>
+                                <option value="forge-34.1.39">Forge 34.1.39</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.16.2" id="forge-1162" style="display: none;">
+                                <option value="forge-33.0.61">Forge 33.0.61 (Recommandée)</option>
+                                <option value="forge-33.0.60">Forge 33.0.60</option>
+                                <option value="forge-33.0.59">Forge 33.0.59</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.16.1" id="forge-1161" style="display: none;">
+                                <option value="forge-32.0.108">Forge 32.0.108 (Recommandée)</option>
+                                <option value="forge-32.0.107">Forge 32.0.107</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.15.2" id="forge-1152" style="display: none;">
+                                <option value="forge-31.2.57">Forge 31.2.57 (Recommandée)</option>
+                                <option value="forge-31.2.56">Forge 31.2.56</option>
+                                <option value="forge-31.2.55">Forge 31.2.55</option>
+                                <option value="forge-31.2.54">Forge 31.2.54</option>
+                                <option value="forge-31.2.53">Forge 31.2.53</option>
+                                <option value="forge-31.2.52">Forge 31.2.52</option>
+                                <option value="forge-31.2.51">Forge 31.2.51</option>
+                                <option value="forge-31.2.50">Forge 31.2.50</option>
+                                <option value="forge-31.2.49">Forge 31.2.49</option>
+                                <option value="forge-31.2.48">Forge 31.2.48</option>
+                            </optgroup>
+                            <optgroup label="Forge 1.15.1" id="forge-1151" style="display: none;">
+                                <option value="forge-30.0.51">Forge 30.0.51 (Recommandée)</option>
+                                <option value="forge-30.0.50">Forge 30.0.50</option>
+                                <option value="forge-30.0.49">Forge 30.0.49</option>
+                            </optgroup>
+                            <optgroup label="Fabric Loader" id="fabric-versions" style="display: none;">
+                                <option value="fabric-0.16.9">Fabric Loader 0.16.9 (Dernière)</option>
+                                <option value="fabric-0.16.7">Fabric Loader 0.16.7</option>
+                                <option value="fabric-0.16.5">Fabric Loader 0.16.5</option>
+                                <option value="fabric-0.16.4">Fabric Loader 0.16.4</option>
+                                <option value="fabric-0.16.3">Fabric Loader 0.16.3</option>
+                                <option value="fabric-0.16.2">Fabric Loader 0.16.2</option>
+                                <option value="fabric-0.16.0">Fabric Loader 0.16.0</option>
+                                <option value="fabric-0.15.11">Fabric Loader 0.15.11</option>
+                                <option value="fabric-0.15.10">Fabric Loader 0.15.10</option>
+                                <option value="fabric-0.15.7">Fabric Loader 0.15.7</option>
+                                <option value="fabric-0.15.6">Fabric Loader 0.15.6</option>
+                                <option value="fabric-0.15.3">Fabric Loader 0.15.3</option>
+                                <option value="fabric-0.14.25">Fabric Loader 0.14.25</option>
+                                <option value="fabric-0.14.24">Fabric Loader 0.14.24</option>
+                                <option value="fabric-0.14.21">Fabric Loader 0.14.21</option>
+                            </optgroup>
+                            <optgroup label="NeoForge 1.21" id="neoforge-121" style="display: none;">
+                                <option value="neoforge-21.4.30">NeoForge 21.4.30 (1.21.4)</option>
+                                <option value="neoforge-21.3.66">NeoForge 21.3.66 (1.21.3)</option>
+                                <option value="neoforge-21.1.77">NeoForge 21.1.77 (1.21.1)</option>
+                            </optgroup>
+                            <optgroup label="NeoForge 1.20" id="neoforge-120" style="display: none;">
+                                <option value="neoforge-20.6.119">NeoForge 20.6.119 (1.20.6)</option>
+                                <option value="neoforge-20.4.237">NeoForge 20.4.237 (1.20.4)</option>
+                            </optgroup>
+                            <optgroup label="Quilt Loader" id="quilt-versions" style="display: none;">
+                                <option value="quilt-0.27.1">Quilt Loader 0.27.1 (Dernière)</option>
+                                <option value="quilt-0.26.4">Quilt Loader 0.26.4</option>
+                                <option value="quilt-0.25.2">Quilt Loader 0.25.2</option>
                             </optgroup>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Mode de jeu</label>
-                        <select required>
+                        <select required id="gamemode">
                             <option value="survival">Survie</option>
                             <option value="creative">Créatif</option>
                             <option value="adventure">Aventure</option>
@@ -601,7 +921,7 @@
 
                     <div class="form-group full">
                         <label>Description du serveur (optionnel)</label>
-                        <textarea placeholder="Décrivez votre serveur..."></textarea>
+                        <textarea id="server-description" placeholder="Décrivez votre serveur..."></textarea>
                     </div>
                 </div>
 
@@ -611,23 +931,16 @@
             </form>
         </div>
 
-        <!-- Section Dashboard -->
         <div id="dashboard-section" class="dashboard">
             <h2 class="section-title" style="color: #667eea;">Mes serveurs</h2>
-
-            <div id="servers-list">
-                <!-- Les serveurs seront chargés dynamiquement ici -->
-            </div>
-
+            <div id="servers-list"></div>
             <div style="text-align: center; margin-top: 30px;">
                 <button class="btn-primary" onclick="showSection('home')">+ Créer un nouveau serveur</button>
             </div>
         </div>
 
-        <!-- Section Statut Public -->
         <div id="status-section" class="dashboard">
             <h2 class="section-title" style="color: #667eea;">Statut du Serveur</h2>
-            
             <div style="background: #f7fafc; padding: 30px; border-radius: 15px; margin-bottom: 30px;">
                 <label style="color: #2d3748; font-weight: 600; margin-bottom: 15px; display: block; font-size: 1.2em;">
                     Entrez l'adresse IP du serveur
@@ -668,7 +981,7 @@
 
                     <div style="background: #f7fafc; padding: 25px; border-radius: 15px; margin-top: 30px;">
                         <h4 style="color: #2d3748; margin-bottom: 15px; font-size: 1.3em;">📋 Description du serveur</h4>
-                        <p id="server-description" style="color: #4a5568; line-height: 1.6; font-size: 1.1em;">
+                        <p id="server-description-display" style="color: #4a5568; line-height: 1.6; font-size: 1.1em;">
                             Serveur Minecraft survie avec une communauté active. Venez construire et explorer avec nous !
                         </p>
                     </div>
@@ -706,7 +1019,6 @@
         </div>
     </div>
 
-    <!-- Modal de succès -->
     <div id="success-modal" class="modal">
         <div class="modal-content">
             <div class="success-message">✓</div>
@@ -721,7 +1033,6 @@
     </div>
 
     <script>
-// Remplacez par votre vraie URL Render !
 const API_URL = 'https://minecraft-backend-4s7j.onrender.com/api';
 
 let selectedPlan = {
@@ -761,7 +1072,6 @@ async function checkServerStatus() {
         return;
     }
 
-    // Hide all displays
     document.getElementById('status-display').style.display = 'none';
     document.getElementById('offline-display').style.display = 'none';
     document.getElementById('starting-display').style.display = 'none';
@@ -776,7 +1086,7 @@ async function checkServerStatus() {
             document.getElementById('players-count').textContent = data.server.currentPlayers + '/' + data.server.maxPlayers;
             document.getElementById('version-display').textContent = data.server.version;
             document.getElementById('ping-display').textContent = data.server.ping + 'ms';
-            document.getElementById('server-description').textContent = data.server.description || 'Aucune description';
+            document.getElementById('server-description-display').textContent = data.server.description || 'Aucune description';
         } else if (data.status === 'starting') {
             document.getElementById('starting-display').style.display = 'block';
             document.getElementById('starting-ip').textContent = serverIp;
@@ -805,23 +1115,34 @@ function toggleModLoader() {
     const modloaderLabel = document.getElementById('modloader-label');
     const modloaderSelect = document.getElementById('modloader-version');
     
-    // Hide all optgroups first
     document.querySelectorAll('#modloader-version optgroup').forEach(group => {
         group.style.display = 'none';
     });
     
-    // Reset selection
     modloaderSelect.value = '';
     
     if (serverType === 'forge') {
         modloaderGroup.style.display = 'flex';
         modloaderLabel.textContent = 'Version de Forge';
-        document.getElementById('forge-versions').style.display = 'block';
+        document.querySelectorAll('[id^="forge-"]').forEach(group => {
+            group.style.display = 'block';
+        });
         modloaderSelect.required = true;
     } else if (serverType === 'fabric') {
         modloaderGroup.style.display = 'flex';
         modloaderLabel.textContent = 'Version de Fabric Loader';
         document.getElementById('fabric-versions').style.display = 'block';
+        modloaderSelect.required = true;
+    } else if (serverType === 'neoforge') {
+        modloaderGroup.style.display = 'flex';
+        modloaderLabel.textContent = 'Version de NeoForge';
+        document.getElementById('neoforge-121').style.display = 'block';
+        document.getElementById('neoforge-120').style.display = 'block';
+        modloaderSelect.required = true;
+    } else if (serverType === 'quilt') {
+        modloaderGroup.style.display = 'flex';
+        modloaderLabel.textContent = 'Version de Quilt Loader';
+        document.getElementById('quilt-versions').style.display = 'block';
         modloaderSelect.required = true;
     } else {
         modloaderGroup.style.display = 'none';
@@ -837,9 +1158,9 @@ async function createServer(event) {
         version: document.getElementById('mc-version').value,
         serverType: document.getElementById('server-type').value,
         modloaderVersion: document.getElementById('modloader-version').value,
-        gamemode: 'survival',
+        gamemode: document.getElementById('gamemode').value,
         plan: selectedPlan.name,
-        description: document.querySelector('#create-server-form textarea').value
+        description: document.getElementById('server-description').value
     };
 
     try {
@@ -883,7 +1204,6 @@ async function loadServers() {
             serversList.innerHTML = '';
             
             data.servers.forEach(server => {
-                // Déterminer le statut avec classe CSS et texte
                 let statusClass = 'offline';
                 let statusText = '● Hors ligne';
                 
@@ -895,7 +1215,6 @@ async function loadServers() {
                     statusText = '● Démarrage';
                 }
                 
-                // Déterminer si on affiche "Plugins" ou "Mods"
                 let pluginsMods = '';
                 if (server.type === 'vanilla') {
                     pluginsMods = 'Vanilla pur';
@@ -908,8 +1227,24 @@ async function loadServers() {
                     }
                 }
                 
-                // Capitaliser le type de serveur
                 const serverTypeName = server.type.charAt(0).toUpperCase() + server.type.slice(1);
+                
+                let statsHTML = '';
+                if (server.status === 'online') {
+                    statsHTML = `
+                        <div class="server-stats">
+                            <span class="stat-badge cpu" title="CPU: ${server.cpuUsage}% / ${server.cpuLimit}%">
+                                💻 CPU ${server.cpuPercent}%
+                            </span>
+                            <span class="stat-badge ram" title="RAM: ${server.ramUsage} GB / ${server.ram} GB">
+                                🧠 RAM ${server.ramPercent}%
+                            </span>
+                            <span class="stat-badge uptime" title="Temps de fonctionnement">
+                                ⏱️ ${server.uptimeFormatted}
+                            </span>
+                        </div>
+                    `;
+                }
                 
                 const serverHTML = `
                     <div class="server-item">
@@ -917,12 +1252,16 @@ async function loadServers() {
                             <h3>🏰 ${server.name}</h3>
                             <p>Version ${server.version} • ${serverTypeName} • Plan ${server.plan} (${server.ram} GB RAM)</p>
                             <p style="margin-top: 5px; color: #718096; font-size: 0.9em;">${pluginsMods} • ${server.currentPlayers}/${server.maxPlayers} joueurs</p>
-                            <p style="margin-top: 8px;"><strong>Adresse IP:</strong> <code style="background: #e2e8f0; padding: 5px 10px; border-radius: 5px; font-family: monospace;">${server.ip}</code></p>
+                            ${statsHTML}
+                            <p style="margin-top: 12px;"><strong>Adresse IP:</strong> <code style="background: #e2e8f0; padding: 5px 10px; border-radius: 5px; font-family: monospace;">${server.ip}</code></p>
                             <p style="margin-top: 8px;"><strong>Lien public:</strong> <a href="#" onclick="showPublicStatus('${server.ip}'); return false;" style="color: #667eea; text-decoration: underline;">Voir la page de statut</a></p>
                             <span class="status ${statusClass}">${statusText}</span>
                         </div>
                         <div class="server-actions">
-                            <button class="btn-small btn-stop" onclick="stopServer('${server.id}')">Arrêter</button>
+                            ${server.status === 'online' 
+                                ? `<button class="btn-small btn-stop" onclick="stopServer('${server.id}')">Arrêter</button>`
+                                : `<button class="btn-small btn-start" style="background: #48bb78; color: white;" onclick="startServer('${server.id}')">Démarrer</button>`
+                            }
                             <button class="btn-small btn-config" onclick="window.location.href='console.html?server=${server.id}'">Configurer</button>
                         </div>
                     </div>
@@ -959,21 +1298,46 @@ async function stopServer(serverId) {
         if (data.success) {
             alert('Serveur arrêté avec succès');
             loadServers();
+        } else {
+            alert('Erreur: ' + data.message);
         }
     } catch (error) {
         console.error('Erreur:', error);
+        alert('Erreur de connexion au serveur');
     }
 }
 
-function openConsole(serverId) {
-    // Rediriger vers la console avec l'ID du serveur
-    window.location.href = `console.html?server=${serverId}`;
+async function startServer(serverId) {
+    try {
+        const response = await fetch(`${API_URL}/servers/${serverId}/start`, {
+            method: 'POST'
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('Serveur en cours de démarrage...');
+            setTimeout(() => {
+                loadServers();
+            }, 3500);
+        } else {
+            alert('Erreur: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Erreur:', error);
+        alert('Erreur de connexion au serveur');
+    }
 }
 
-// Charger les serveurs au chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
     loadServers();
 });
-    </script> 
+
+setInterval(() => {
+    const dashboardSection = document.getElementById('dashboard-section');
+    if (dashboardSection && dashboardSection.style.display !== 'none') {
+        loadServers();
+    }
+}, 10000);
+    </script>
 </body>
 </html>
