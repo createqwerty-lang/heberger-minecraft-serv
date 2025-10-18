@@ -431,31 +431,8 @@
                     </div>
 
                     <div id="files-tab" class="tab-content">
-                        <div class="file-manager">
-                            <div class="file-item">
-                                <span>📁 plugins/</span>
-                                <span style="opacity: 0.6;">12 fichiers</span>
-                            </div>
-                            <div class="file-item">
-                                <span>📁 world/</span>
-                                <span style="opacity: 0.6;">2.1 GB</span>
-                            </div>
-                            <div class="file-item">
-                                <span>📄 server.properties</span>
-                                <span style="opacity: 0.6;">2.3 KB</span>
-                            </div>
-                            <div class="file-item">
-                                <span>📄 whitelist.json</span>
-                                <span style="opacity: 0.6;">156 B</span>
-                            </div>
-                            <div class="file-item">
-                                <span>📄 ops.json</span>
-                                <span style="opacity: 0.6;">89 B</span>
-                            </div>
-                            <div class="file-item">
-                                <span>📄 banned-players.json</span>
-                                <span style="opacity: 0.6;">42 B</span>
-                            </div>
+                        <div class="file-manager" id="file-manager">
+                            <p style="text-align: center; opacity: 0.7;">Chargement des fichiers...</p>
                         </div>
                     </div>
 
@@ -651,6 +628,46 @@
                 <p style="margin-bottom: 10px;"><strong>Joueurs max :</strong> ${serverData.maxPlayers}</p>
                 <p style="margin-bottom: 10px;"><strong>Plan :</strong> ${serverData.plan}</p>
                 <button class="action-btn" style="margin-top: 15px; background: #238636; color: white;">💾 Sauvegarder les modifications</button>
+            `;
+
+            // Mettre à jour la liste des fichiers selon le type de serveur
+            updateFilesList();
+        }
+
+        function updateFilesList() {
+            const fileManager = document.getElementById('file-manager');
+            
+            // Déterminer si c'est plugins ou mods
+            let addonFolder = '📁 plugins/';
+            if (serverData.type === 'forge' || serverData.type === 'fabric' || serverData.type === 'neoforge' || serverData.type === 'quilt') {
+                addonFolder = '📁 mods/';
+            }
+
+            fileManager.innerHTML = `
+                <div class="file-item">
+                    <span>${addonFolder}</span>
+                    <span style="opacity: 0.6;">12 fichiers</span>
+                </div>
+                <div class="file-item">
+                    <span>📁 world/</span>
+                    <span style="opacity: 0.6;">2.1 GB</span>
+                </div>
+                <div class="file-item">
+                    <span>📄 server.properties</span>
+                    <span style="opacity: 0.6;">2.3 KB</span>
+                </div>
+                <div class="file-item">
+                    <span>📄 whitelist.json</span>
+                    <span style="opacity: 0.6;">156 B</span>
+                </div>
+                <div class="file-item">
+                    <span>📄 ops.json</span>
+                    <span style="opacity: 0.6;">89 B</span>
+                </div>
+                <div class="file-item">
+                    <span>📄 banned-players.json</span>
+                    <span style="opacity: 0.6;">42 B</span>
+                </div>
             `;
         }
 
