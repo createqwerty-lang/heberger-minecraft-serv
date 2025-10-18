@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Console - MineCraft Cloud</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 1.8em;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .server-info-bar {
+            background: #16213e;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .server-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #48bb78;
+            box-shadow: 0 0 10px #48bb78;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .server-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-start {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-stop {
+            background: #f56565;
+            color: white;
+        }
+
+        .btn-restart {
+            background: #ed8936;
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: #16213e;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .console-window {
+            background: #0d1117;
+            border-radius: 10px;
+            padding: 20px;
+            height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .console-line {
+            margin: 5px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .console-line.info {
+            color: #58a6ff;
+        }
+
+        .console-line.warning {
+            color: #f0883e;
+        }
+
+        .console-line.error {
+            color: #f85149;
+        }
+
+        .console-line.success {
+            color: #3fb950;
+        }
+
+        .command-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .command-input input {
+            flex: 1;
+            padding: 12px;
+            background: #0d1117;
+            border: 2px solid #30363d;
+            border-radius: 8px;
+            color: #c9d1d9;
+            font-family: 'Courier New', monospace;
+        }
+
+        .command-input input:focus {
+            outline: none;
+            border-color: #58a6ff;
+        }
+
+        .command-input button {
+            padding: 12px 25px;
+            background: #238636;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .command-input button:hover {
+            background: #2ea043;
+        }
+
+        .stats-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            opacity: 0.9;
+            font-size: 0.9em;
+        }
+
+        .progress-bar {
+            background: #0d1117;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78, #38ef7d);
+            transition: width 0.5s;
+        }
+
+        .players-list {
+            margin-top: 15px;
+        }
+
+        .player-item {
+            background: #0d1117;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .player-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #30363d;
+        }
+
+        .tab {
+            padding: 12px 25px;
+            background: none;
+            border: none;
+            color: #8b949e;
+            cursor: pointer;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: #58a6ff;
+            border-bottom-color: #58a6ff;
+        }
+
+        .tab:hover {
+            color: #c9d1d9;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .file-manager {
+            margin-top: 20px;
+        }
+
+        .file-item {
+            background: #0d1117;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-item:hover {
+            background: #161b22;
+        }
+
+        .file-icon {
+            margin-right: 10px;
+        }
+
+        @media (max-width: 968px) {
+            .grid-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 15px 20px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #30363d;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #484f58;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏰 Console de gestion</h1>
+        <a href="index.html" class="back-btn">← Retour au dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="server-info-bar">
+            <div class="server-status">
+                <div class="status-dot"></div>
+                <div>
+                    <h2 id="server-name">Mon Serveur Survie</h2>
+                    <p style="opacity: 0.7;">play.mccloud.fr:25565 • Version 1.21</p>
+                </div>
+            </div>
+            <div class="server-actions">
+                <button class="action-btn btn-start" onclick="startServer()">▶ Démarrer</button>
+                <button class="action-btn btn-restart" onclick="restartServer()">🔄 Redémarrer</button>
+                <button class="action-btn btn-stop" onclick="stopServer()">⏹ Arrêter</button>
+            </div>
+        </div>
+
+        <div class="grid-layout">
+            <div>
+                <div class="card">
+                    <div class="tabs">
+                        <button class="tab active" onclick="switchTab('console')">📟 Console</button>
+                        <button class="tab" onclick="switchTab('files')">📁 Fichiers</button>
+                        <button class="tab" onclick="switchTab('settings')">⚙️ Paramètres</button>
+                    </div>
+
+                    <div id="console-tab" class="tab-content active">
+                        <div class="console-window" id="console-output">
+                            <div class="console-line info">[INFO] Démarrage du serveur...</div>
+                            <div class="console-line success">[SUCCESS] Serveur démarré sur le port 25565</div>
+                            <div class="console-line info">[INFO] Chargement du monde...</div>
+                            <div class="console-line success">[SUCCESS] Monde chargé avec succès</div>
+                            <div class="console-line info">[INFO] Steve a rejoint le jeu</div>
+                            <div class="console-line warning">[WARNING] La RAM est à 65% d'utilisation</div>
+                            <div class="console-line info">[INFO] Alex a rejoint le jeu</div>
+                        </div>
+                        <div class="command-input">
+                            <input type="text" id="command-input" placeholder="Entrez une commande... (ex: /say Bonjour)" onkeypress="handleCommandEnter(event)">
+                            <button onclick="sendCommand()">Envoyer</button>
+                        </div>
+                    </div>
+
+                    <div id="files-tab" class="tab-content">
+                        <div class="file-manager">
+                            <div class="file-item">
+                                <span>📁 plugins/</span>
+                                <span style="opacity: 0.6;">12 fichiers</span>
+                            </div>
+                            <div class="file-item">
+                                <span>📁 world/</span>
+                                <span style="opacity: 0.6;">2.1 GB</span>
+                            </div>
+                            <div class="file-item">
+                                <span>📄 server.properties</span>
+                                <span style="opacity: 0.6;">2.3 KB</span>
+                            </div>
+                            <div class="file-item">
+                                <span>📄 whitelist.json</span>
+                                <span style="opacity: 0.6;">156 B</span>
+                            </div>
+                            <div class="file-item">
+                                <span>📄 ops.json</span>
+                                <span style="opacity: 0.6;">89 B</span>
+                            </div>
+                            <div class="file-item">
+                                <span>📄 banned-players.json</span>
+                                <span style="opacity: 0.6;">42 B</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="settings-tab" class="tab-content">
+                        <h3 style="margin-bottom: 15px;">Paramètres du serveur</h3>
+                        <div style="background: #0d1117; padding: 20px; border-radius: 10px;">
+                            <p style="margin-bottom: 10px;"><strong>Version :</strong> 1.21</p>
+                            <p style="margin-bottom: 10px;"><strong>Type :</strong> Paper</p>
+                            <p style="margin-bottom: 10px;"><strong>RAM allouée :</strong> 8 GB</p>
+                            <p style="margin-bottom: 10px;"><strong>Joueurs max :</strong> 50</p>
+                            <p style="margin-bottom: 10px;"><strong>Difficulté :</strong> Normal</p>
+                            <p style="margin-bottom: 10px;"><strong>PvP :</strong> Activé</p>
+                            <button class="action-btn" style="margin-top: 15px; background: #238636; color: white;">💾 Sauvegarder les modifications</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="card">
+                    <h3 class="card-title">📊 Statistiques en temps réel</h3>
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-value" id="cpu-usage">45%</div>
+                            <div class="stat-label">Utilisation CPU</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%"></div>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="ram-usage">5.2 GB</div>
+                            <div class="stat-label">RAM utilisée / 8 GB</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="uptime">23h 45m</div>
+                            <div class="stat-label">Temps de fonctionnement</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 30px;">
+                    <h3 class="card-title">👥 Joueurs connectés (3/50)</h3>
+                    <div class="players-list">
+                        <div class="player-item">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div class="player-avatar">S</div>
+                                <div>
+                                    <div style="font-weight: 600;">Steve</div>
+                                    <div style="font-size: 0.85em; opacity: 0.7;">En ligne depuis 2h</div>
+                                </div>
+                            </div>
+                            <button class="action-btn btn-stop" style="font-size: 0.8em; padding: 5px 15px;">Kick</button>
+                        </div>
+                        <div class="player-item">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div class="player-avatar">A</div>
+                                <div>
+                                    <div style="font-weight: 600;">Alex</div>
+                                    <div style="font-size: 0.85em; opacity: 0.7;">En ligne depuis 45m</div>
+                                </div>
+                            </div>
+                            <button class="action-btn btn-stop" style="font-size: 0.8em; padding: 5px 15px;">Kick</button>
+                        </div>
+                        <div class="player-item">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div class="player-avatar">N</div>
+                                <div>
+                                    <div style="font-weight: 600;">Notch</div>
+                                    <div style="font-size: 0.85em; opacity: 0.7;">En ligne depuis 12m</div>
+                                </div>
+                            </div>
+                            <button class="action-btn btn-stop" style="font-size: 0.8em; padding: 5px 15px;">Kick</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Changer les tabs
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Changer le contenu
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+
+        function sendCommand() {
+            const input = document.getElementById('command-input');
+            const command = input.value.trim();
+            
+            if (!command) return;
+
+            const console = document.getElementById('console-output');
+            const commandLine = document.createElement('div');
+            commandLine.className = 'console-line';
+            commandLine.style.color = '#c9d1d9';
+            commandLine.textContent = `> ${command}`;
+            console.appendChild(commandLine);
+
+            // Simuler une réponse
+            setTimeout(() => {
+                const responseLine = document.createElement('div');
+                responseLine.className = 'console-line success';
+                responseLine.textContent = `[SUCCESS] Commande "${command}" exécutée`;
+                console.appendChild(responseLine);
+                console.scrollTop = console.scrollHeight;
+            }, 500);
+
+            input.value = '';
+            console.scrollTop = console.scrollHeight;
+        }
+
+        function handleCommandEnter(event) {
+            if (event.key === 'Enter') {
+                sendCommand();
+            }
+        }
+
+        function startServer() {
+            addConsoleLog('info', '[INFO] Démarrage du serveur en cours...');
+            setTimeout(() => {
+                addConsoleLog('success', '[SUCCESS] Serveur démarré avec succès !');
+            }, 2000);
+        }
+
+        function stopServer() {
+            addConsoleLog('warning', '[WARNING] Arrêt du serveur en cours...');
+            setTimeout(() => {
+                addConsoleLog('info', '[INFO] Serveur arrêté');
+            }, 2000);
+        }
+
+        function restartServer() {
+            addConsoleLog('warning', '[WARNING] Redémarrage du serveur...');
+            setTimeout(() => {
+                addConsoleLog('success', '[SUCCESS] Serveur redémarré !');
+            }, 3000);
+        }
+
+        function addConsoleLog(type, message) {
+            const console = document.getElementById('console-output');
+            const line = document.createElement('div');
+            line.className = `console-line ${type}`;
+            line.textContent = message;
+            console.appendChild(line);
+            console.scrollTop = console.scrollHeight;
+        }
+
+        // Simuler des logs en temps réel
+        setInterval(() => {
+            const messages = [
+                { type: 'info', text: '[INFO] Sauvegarde automatique du monde...' },
+                { type: 'success', text: '[SUCCESS] Monde sauvegardé' },
+                { type: 'info', text: '[INFO] Un joueur a miné du diamant' }
+            ];
+            const random = messages[Math.floor(Math.random() * messages.length)];
+            if (Math.random() > 0.7) {
+                addConsoleLog(random.type, random.text);
+            }
+        }, 10000);
+
+        // Mettre à jour les stats
+        setInterval(() => {
+            const cpu = Math.floor(Math.random() * 30) + 40;
+            document.getElementById('cpu-usage').textContent = cpu + '%';
+            document.querySelector('.progress-fill').style.width = cpu + '%';
+        }, 5000);
+    </script>
+</body>
+</html>
