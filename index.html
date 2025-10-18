@@ -863,7 +863,7 @@ async function loadServers() {
                         </div>
                         <div class="server-actions">
                             <button class="btn-small btn-stop" onclick="stopServer('${server.id}')">Arrêter</button>
-                            <button class="btn-small btn-config" onclick="alert('Configuration en développement')">Configurer</button>
+                            <button class="btn-small btn-config" onclick="openConsole('${server.id}')">Configurer</button>
                         </div>
                     </div>
                 `;
