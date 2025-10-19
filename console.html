@@ -396,6 +396,27 @@
             ⚠️ Le serveur est hors ligne. Démarrez-le pour voir les informations en temps réel.
         </div>
 
+        <!-- Indicateur d'upload flottant -->
+        <div class="upload-indicator" id="upload-indicator" onclick="openUploadModal()">
+            <div class="spinner"></div>
+        </div>
+
+        <!-- Modal d'upload -->
+        <div class="upload-modal" id="upload-modal">
+            <div class="upload-modal-content">
+                <div class="upload-modal-header">
+                    <h2>📤 File Uploads</h2>
+                    <button class="close-modal-btn" onclick="closeUploadModal()">×</button>
+                </div>
+                <p style="color: #8b949e; margin-bottom: 20px;">The following files are being uploaded to your server.</p>
+                <div id="upload-files-list"></div>
+                <div class="upload-modal-actions">
+                    <button class="cancel-uploads-btn" onclick="cancelAllUploads()">Cancel Uploads</button>
+                    <button class="close-uploads-btn" onclick="closeUploadModal()">Close</button>
+                </div>
+            </div>
+        </div>
+
         <div class="server-info-bar">
             <div class="server-status">
                 <div class="status-dot" id="status-dot"></div>
@@ -431,6 +452,23 @@
                     </div>
 
                     <div id="files-tab" class="tab-content">
+                        <div style="margin-bottom: 20px;">
+                            <button class="action-btn" style="background: #238636; color: white; margin-right: 10px;" onclick="document.getElementById('file-upload').click()">
+                                📤 Uploader un fichier
+                            </button>
+                            <button class="action-btn" style="background: #4299e1; color: white;" onclick="refreshFiles()">
+                                🔄 Rafraîchir
+                            </button>
+                            <input type="file" id="file-upload" style="display: none;" accept=".jar,.zip,.txt,.json,.properties,.yml,.yaml" onchange="handleFileUpload(event)" multiple>
+                        </div>
+                        
+                        <div id="upload-progress" style="display: none; background: #0d1117; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                            <p style="margin-bottom: 10px;" id="upload-text">Upload en cours...</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="upload-progress-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
                         <div class="file-manager" id="file-manager">
                             <p style="text-align: center; opacity: 0.7;">Chargement des fichiers...</p>
                         </div>
@@ -484,6 +522,8 @@
         const API_URL = 'https://minecraft-backend-4s7j.onrender.com/api';
         let currentServerId = null;
         let serverData = null;
+        let activeUploads = [];
+        let uploadIntervals = [];
 
         const urlParams = new URLSearchParams(window.location.search);
         currentServerId = urlParams.get('server');
@@ -638,37 +678,360 @@
             const fileManager = document.getElementById('file-manager');
             
             // Déterminer si c'est plugins ou mods
-            let addonFolder = '📁 plugins/';
+            let addonFolder = 'plugins';
+            let addonIcon = '🧩';
             if (serverData.type === 'forge' || serverData.type === 'fabric' || serverData.type === 'neoforge' || serverData.type === 'quilt') {
-                addonFolder = '📁 mods/';
+                addonFolder = 'mods';
+                addonIcon = '📦';
             }
 
+            // Liste des fichiers uploadés (stockée en localStorage pour simulation)
+            let uploadedFiles = JSON.parse(localStorage.getItem(`server_${currentServerId}_files`) || '[]');
+
             fileManager.innerHTML = `
-                <div class="file-item">
-                    <span>${addonFolder}</span>
-                    <span style="opacity: 0.6;">12 fichiers</span>
+                <div class="upload-zone" id="upload-zone" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                    <p style="font-size: 1.2em; margin-bottom: 10px;">📁 Glissez-déposez vos fichiers ici</p>
+                    <p style="opacity: 0.7; font-size: 0.9em;">ou cliquez sur "Uploader un fichier" ci-dessus</p>
+                    <p style="opacity: 0.6; font-size: 0.85em; margin-top: 10px;">Formats acceptés : .jar, .zip, .txt, .json, .properties, .yml</p>
+                </div>
+
+                <div class="folder-item" onclick="openFolder('${addonFolder}')">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.3em;">${addonIcon}</span>
+                        <div>
+                            <div style="font-weight: 600;">📁 ${addonFolder}/</div>
+                            <div style="font-size: 0.85em; opacity: 0.7;">${uploadedFiles.filter(f => f.folder === addonFolder).length} fichiers</div>
+                        </div>
+                    </div>
+                    <span style="opacity: 0.6;">→</span>
                 </div>
                 <div class="file-item">
-                    <span>📁 world/</span>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>📁</span>
+                        <span>world/</span>
+                    </div>
                     <span style="opacity: 0.6;">2.1 GB</span>
                 </div>
                 <div class="file-item">
-                    <span>📄 server.properties</span>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>📄</span>
+                        <span>server.properties</span>
+                    </div>
                     <span style="opacity: 0.6;">2.3 KB</span>
                 </div>
                 <div class="file-item">
-                    <span>📄 whitelist.json</span>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>📄</span>
+                        <span>whitelist.json</span>
+                    </div>
                     <span style="opacity: 0.6;">156 B</span>
                 </div>
                 <div class="file-item">
-                    <span>📄 ops.json</span>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>📄</span>
+                        <span>ops.json</span>
+                    </div>
                     <span style="opacity: 0.6;">89 B</span>
                 </div>
                 <div class="file-item">
-                    <span>📄 banned-players.json</span>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>📄</span>
+                        <span>banned-players.json</span>
+                    </div>
                     <span style="opacity: 0.6;">42 B</span>
                 </div>
             `;
+        }
+
+        function openFolder(folderName) {
+            const fileManager = document.getElementById('file-manager');
+            let uploadedFiles = JSON.parse(localStorage.getItem(`server_${currentServerId}_files`) || '[]');
+            let folderFiles = uploadedFiles.filter(f => f.folder === folderName);
+
+            let addonIcon = folderName === 'mods' ? '📦' : '🧩';
+
+            fileManager.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <button class="action-btn" style="background: #30363d; color: white;" onclick="updateFilesList()">
+                        ← Retour
+                    </button>
+                </div>
+
+                <h3 style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    <span>${addonIcon}</span> ${folderName}/ (${folderFiles.length} fichiers)
+                </h3>
+
+                <div class="upload-zone" id="upload-zone-folder" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                    <p style="font-size: 1.2em; margin-bottom: 10px;">📦 Glissez-déposez vos fichiers .jar ici</p>
+                    <p style="opacity: 0.7; font-size: 0.9em;">Les fichiers seront ajoutés au dossier ${folderName}/</p>
+                </div>
+
+                ${folderFiles.length === 0 
+                    ? '<p style="text-align: center; opacity: 0.7; padding: 40px;">Aucun fichier. Uploadez des mods/plugins !</p>'
+                    : folderFiles.map(file => `
+                        <div class="file-item">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span>📦</span>
+                                <div>
+                                    <div style="font-weight: 600;">${file.name}</div>
+                                    <div style="font-size: 0.85em; opacity: 0.7;">${formatFileSize(file.size)} • Uploadé le ${new Date(file.uploadedAt).toLocaleString('fr-FR')}</div>
+                                </div>
+                            </div>
+                            <div class="file-item-actions">
+                                <button class="btn-download" onclick="downloadFile('${file.id}')">⬇️ Télécharger</button>
+                                <button class="btn-delete" onclick="deleteFile('${file.id}')">🗑️ Supprimer</button>
+                            </div>
+                        </div>
+                    `).join('')
+                }
+            `;
+
+            // Réactiver le drag & drop pour la nouvelle zone
+            const newUploadZone = document.getElementById('upload-zone-folder');
+            if (newUploadZone) {
+                newUploadZone.setAttribute('data-folder', folderName);
+            }
+        }
+
+        function handleFileUpload(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+
+            // Déterminer le dossier par défaut
+            let defaultFolder = serverData.type === 'forge' || serverData.type === 'fabric' || serverData.type === 'neoforge' || serverData.type === 'quilt' 
+                ? 'mods' 
+                : 'plugins';
+
+            uploadFiles(files, defaultFolder);
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const uploadZone = event.currentTarget;
+            uploadZone.classList.remove('dragover');
+
+            const files = event.dataTransfer.files;
+            if (!files || files.length === 0) return;
+
+            // Déterminer le dossier
+            let folder = uploadZone.getAttribute('data-folder');
+            if (!folder) {
+                folder = serverData.type === 'forge' || serverData.type === 'fabric' || serverData.type === 'neoforge' || serverData.type === 'quilt' 
+                    ? 'mods' 
+                    : 'plugins';
+            }
+
+            uploadFiles(files, folder);
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.currentTarget.classList.add('dragover');
+        }
+
+        function handleDragLeave(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.currentTarget.classList.remove('dragover');
+        }
+
+        function uploadFiles(files, folder) {
+            const uploadIndicator = document.getElementById('upload-indicator');
+            
+            // Afficher l'indicateur d'upload
+            uploadIndicator.classList.add('active');
+
+            let uploadedFiles = JSON.parse(localStorage.getItem(`server_${currentServerId}_files`) || '[]');
+
+            // Ajouter les fichiers à la liste d'uploads actifs
+            for (let file of files) {
+                const uploadId = Date.now() + Math.random().toString(36).substr(2, 9);
+                activeUploads.push({
+                    id: uploadId,
+                    name: file.name,
+                    size: file.size,
+                    folder: folder,
+                    progress: 0,
+                    status: 'uploading'
+                });
+            }
+
+            updateUploadModal();
+
+            // Simuler l'upload progressif
+            activeUploads.forEach((upload, index) => {
+                if (upload.status !== 'uploading') return;
+
+                const interval = setInterval(() => {
+                    if (upload.progress >= 100) {
+                        clearInterval(interval);
+                        upload.status = 'completed';
+                        
+                        // Ajouter le fichier à la liste
+                        uploadedFiles.push({
+                            id: upload.id,
+                            name: upload.name,
+                            size: upload.size,
+                            folder: upload.folder,
+                            uploadedAt: new Date().toISOString()
+                        });
+
+                        localStorage.setItem(`server_${currentServerId}_files`, JSON.stringify(uploadedFiles));
+                        addConsoleLog('success', `[SUCCESS] ${upload.name} uploadé dans ${upload.folder}/`);
+
+                        updateUploadModal();
+
+                        // Si tous les uploads sont terminés, masquer l'indicateur après 2 secondes
+                        const allCompleted = activeUploads.every(u => u.status === 'completed' || u.status === 'cancelled');
+                        if (allCompleted) {
+                            setTimeout(() => {
+                                uploadIndicator.classList.remove('active');
+                                activeUploads = [];
+                                
+                                // Rafraîchir l'affichage des fichiers
+                                const currentFolder = document.getElementById('upload-zone-folder');
+                                if (currentFolder) {
+                                    openFolder(folder);
+                                } else {
+                                    updateFilesList();
+                                }
+                            }, 2000);
+                        }
+                    } else {
+                        upload.progress += Math.random() * 15 + 5;
+                        if (upload.progress > 100) upload.progress = 100;
+                        updateUploadModal();
+                    }
+                }, 300);
+
+                uploadIntervals.push(interval);
+            });
+        }
+
+        function openUploadModal() {
+            const modal = document.getElementById('upload-modal');
+            modal.classList.add('active');
+            updateUploadModal();
+        }
+
+        function closeUploadModal() {
+            const modal = document.getElementById('upload-modal');
+            modal.classList.remove('active');
+        }
+
+        function updateUploadModal() {
+            const filesList = document.getElementById('upload-files-list');
+            
+            if (activeUploads.length === 0) {
+                filesList.innerHTML = '<p style="text-align: center; color: #8b949e; padding: 20px;">Aucun upload en cours</p>';
+                return;
+            }
+
+            filesList.innerHTML = activeUploads.map(upload => `
+                <div class="upload-file-item">
+                    <div class="upload-file-info">
+                        <div class="upload-file-name">
+                            ${upload.status === 'uploading' ? '<span style="display: inline-block; width: 12px; height: 12px; border: 2px solid #667eea; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px;"></span>' : ''}
+                            ${upload.name}
+                        </div>
+                        ${upload.status !== 'completed' && upload.status !== 'cancelled' ? `
+                            <div class="upload-file-progress">
+                                <div class="upload-file-progress-fill" style="width: ${upload.progress}%"></div>
+                            </div>
+                        ` : `
+                            <div class="upload-file-status">
+                                ${upload.status === 'completed' ? '✓ Upload terminé' : '✗ Upload annulé'}
+                            </div>
+                        `}
+                    </div>
+                    ${upload.status === 'uploading' ? `
+                        <button class="close-modal-btn" style="width: 35px; height: 35px; font-size: 1.2em;" onclick="cancelUpload('${upload.id}')">×</button>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function cancelUpload(uploadId) {
+            const upload = activeUploads.find(u => u.id === uploadId);
+            if (upload) {
+                upload.status = 'cancelled';
+                upload.progress = 0;
+                addConsoleLog('warning', `[WARN] Upload de ${upload.name} annulé`);
+                updateUploadModal();
+            }
+        }
+
+        function cancelAllUploads() {
+            if (!confirm('Voulez-vous annuler tous les uploads en cours ?')) return;
+
+            activeUploads.forEach(upload => {
+                if (upload.status === 'uploading') {
+                    upload.status = 'cancelled';
+                    upload.progress = 0;
+                }
+            });
+
+            uploadIntervals.forEach(interval => clearInterval(interval));
+            uploadIntervals = [];
+
+            addConsoleLog('warning', '[WARN] Tous les uploads ont été annulés');
+            updateUploadModal();
+
+            setTimeout(() => {
+                document.getElementById('upload-indicator').classList.remove('active');
+                closeUploadModal();
+                activeUploads = [];
+            }, 1000);
+        }
+
+        function deleteFile(fileId) {
+            if (!confirm('Voulez-vous vraiment supprimer ce fichier ?')) return;
+
+            let uploadedFiles = JSON.parse(localStorage.getItem(`server_${currentServerId}_files`) || '[]');
+            const file = uploadedFiles.find(f => f.id === fileId);
+            
+            uploadedFiles = uploadedFiles.filter(f => f.id !== fileId);
+            localStorage.setItem(`server_${currentServerId}_files`, JSON.stringify(uploadedFiles));
+
+            addConsoleLog('warning', `[WARN] Fichier ${file.name} supprimé`);
+            
+            // Rafraîchir l'affichage
+            const currentFolder = document.getElementById('upload-zone-folder');
+            if (currentFolder) {
+                openFolder(file.folder);
+            } else {
+                updateFilesList();
+            }
+        }
+
+        function downloadFile(fileId) {
+            addConsoleLog('info', `[INFO] Téléchargement du fichier...`);
+            alert('Fonction de téléchargement simulée.\nDans un vrai système, le fichier serait téléchargé depuis le serveur.');
+        }
+
+        function refreshFiles() {
+            addConsoleLog('info', '[INFO] Actualisation de la liste des fichiers...');
+            updateFilesList();
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        function addConsoleLog(type, message) {
+            const console = document.getElementById('console-output');
+            const line = document.createElement('div');
+            line.className = `console-line ${type}`;
+            line.textContent = message;
+            console.appendChild(line);
+            console.scrollTop = console.scrollHeight;
         }
 
         function switchTab(event, tabName) {
