@@ -668,60 +668,32 @@
                 addonIcon = '📦';
             }
 
-            // Liste des fichiers uploadés (stockée en localStorage pour simulation)
+            // Liste des fichiers uploadés
             let uploadedFiles = JSON.parse(localStorage.getItem(`server_${currentServerId}_files`) || '[]');
 
             fileManager.innerHTML = `
-                <div class="upload-zone" id="upload-zone" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
-                    <p style="font-size: 1.2em; margin-bottom: 10px;">📁 Glissez-déposez vos fichiers ici</p>
-                    <p style="opacity: 0.7; font-size: 0.9em;">ou cliquez sur "Uploader un fichier" ci-dessus</p>
-                    <p style="opacity: 0.6; font-size: 0.85em; margin-top: 10px;">Formats acceptés : .jar, .zip, .txt, .json, .properties, .yml</p>
+                <input type="file" id="file-upload-hidden" style="display: none;" accept=".jar,.zip,.txt,.json,.properties,.yml,.yaml" multiple>
+
+                <div style="background: #0d1117; padding: 25px; border-radius: 10px; margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                        <span style="font-size: 2em;">${addonIcon}</span>
+                        <div>
+                            <h3 style="margin: 0; font-size: 1.3em;">📁 Glissez-déposez vos fichiers ici</h3>
+                            <p style="margin: 5px 0 0 0; opacity: 0.7; font-size: 0.9em;">ou cliquez sur "Uploader un fichier" ci-dessous</p>
+                        </div>
+                    </div>
+                    <p style="opacity: 0.6; font-size: 0.85em; margin: 0;">Formats acceptés : .jar, .zip, .txt, .json, .properties, .yml</p>
                 </div>
 
-                <div class="folder-item" onclick="openFolder('${addonFolder}')">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 1.3em;">${addonIcon}</span>
+                <div class="folder-item" onclick="openFolder('${addonFolder}')" style="cursor: pointer;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span style="font-size: 1.5em;">${addonIcon}</span>
                         <div>
-                            <div style="font-weight: 600;">📁 ${addonFolder}/</div>
+                            <div style="font-weight: 600; font-size: 1.1em;">${addonFolder}/</div>
                             <div style="font-size: 0.85em; opacity: 0.7;">${uploadedFiles.filter(f => f.folder === addonFolder).length} fichiers</div>
                         </div>
                     </div>
-                    <span style="opacity: 0.6;">→</span>
-                </div>
-                <div class="file-item">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span>📁</span>
-                        <span>world/</span>
-                    </div>
-                    <span style="opacity: 0.6;">2.1 GB</span>
-                </div>
-                <div class="file-item">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span>📄</span>
-                        <span>server.properties</span>
-                    </div>
-                    <span style="opacity: 0.6;">2.3 KB</span>
-                </div>
-                <div class="file-item">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span>📄</span>
-                        <span>whitelist.json</span>
-                    </div>
-                    <span style="opacity: 0.6;">156 B</span>
-                </div>
-                <div class="file-item">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span>📄</span>
-                        <span>ops.json</span>
-                    </div>
-                    <span style="opacity: 0.6;">89 B</span>
-                </div>
-                <div class="file-item">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span>📄</span>
-                        <span>banned-players.json</span>
-                    </div>
-                    <span style="opacity: 0.6;">42 B</span>
+                    <span style="opacity: 0.6; font-size: 1.2em;">→</span>
                 </div>
             `;
         }
@@ -744,13 +716,17 @@
                     <span>${addonIcon}</span> ${folderName}/ (${folderFiles.length} fichiers)
                 </h3>
 
-                <div class="upload-zone" id="upload-zone-folder" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
-                    <p style="font-size: 1.2em; margin-bottom: 10px;">📦 Glissez-déposez vos fichiers .jar ici</p>
-                    <p style="opacity: 0.7; font-size: 0.9em;">Les fichiers seront ajoutés au dossier ${folderName}/</p>
+                <input type="file" id="file-upload-folder" style="display: none;" accept=".jar,.zip,.txt,.json,.properties,.yml,.yaml" multiple data-folder="${folderName}">
+
+                <div class="upload-zone" id="upload-zone-folder" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" onclick="document.getElementById('file-upload-folder').click()" data-folder="${folderName}" style="cursor: pointer;">
+                    <p style="font-size: 1.5em; margin-bottom: 10px;">📦</p>
+                    <p style="font-size: 1.2em; margin-bottom: 10px;">Glissez-déposez vos fichiers .jar ici</p>
+                    <p style="opacity: 0.7; font-size: 0.9em;">ou cliquez pour sélectionner des fichiers</p>
+                    <p style="opacity: 0.6; font-size: 0.85em; margin-top: 10px;">Les fichiers seront ajoutés au dossier ${folderName}/</p>
                 </div>
 
                 ${folderFiles.length === 0 
-                    ? '<p style="text-align: center; opacity: 0.7; padding: 40px;">Aucun fichier. Uploadez des mods/plugins !</p>'
+                    ? '<p style="text-align: center; opacity: 0.7; padding: 40px;">Aucun fichier. Glissez-déposez ou cliquez sur la zone ci-dessus !</p>'
                     : folderFiles.map(file => `
                         <div class="file-item">
                             <div style="display: flex; align-items: center; gap: 10px;">
@@ -769,23 +745,23 @@
                 }
             `;
 
-            // Réactiver le drag & drop pour la nouvelle zone
-            const newUploadZone = document.getElementById('upload-zone-folder');
-            if (newUploadZone) {
-                newUploadZone.setAttribute('data-folder', folderName);
-            }
+            // Ajouter l'événement pour l'input file
+            document.getElementById('file-upload-folder').addEventListener('change', handleFileUpload);
         }
 
         function handleFileUpload(event) {
             const files = event.target.files;
             if (!files || files.length === 0) return;
 
-            // Déterminer le dossier par défaut
-            let defaultFolder = serverData.type === 'forge' || serverData.type === 'fabric' || serverData.type === 'neoforge' || serverData.type === 'quilt' 
-                ? 'mods' 
-                : 'plugins';
+            // Déterminer le dossier
+            let folder = event.target.getAttribute('data-folder');
+            if (!folder) {
+                folder = serverData.type === 'forge' || serverData.type === 'fabric' || serverData.type === 'neoforge' || serverData.type === 'quilt' 
+                    ? 'mods' 
+                    : 'plugins';
+            }
 
-            uploadFiles(files, defaultFolder);
+            uploadFiles(files, folder);
         }
 
         function handleDrop(event) {
