@@ -453,6 +453,27 @@
             0% { transform: translateX(-100%); }
             100% { transform: translateX(400%); }
         }
+
+        .server-type-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+
+        .server-type-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .server-type-card.selected {
+            border-color: white;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -533,14 +554,218 @@
 
             <form onsubmit="createServer(event)" id="create-server-form">
                 <div class="form-grid">
-                    <div class="form-group">
-                        <label>Nom du serveur</label>
+                    <!-- ÉTAPE 1: Type de serveur -->
+                    <div class="form-group full" style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                        <h3 style="color: white; margin-bottom: 15px;">🎮 Étape 1 : Type de serveur</h3>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                            <div class="server-type-card" onclick="selectServerType('java')" id="type-java">
+                                <div style="font-size: 3em; margin-bottom: 10px;">☕</div>
+                                <div style="font-weight: bold; font-size: 1.2em;">Minecraft Java</div>
+                                <div style="opacity: 0.8; font-size: 0.9em; margin-top: 5px;">PC/Mac/Linux</div>
+                            </div>
+                            <div class="server-type-card" onclick="selectServerType('bedrock')" id="type-bedrock">
+                                <div style="font-size: 3em; margin-bottom: 10px;">🎮</div>
+                                <div style="font-weight: bold; font-size: 1.2em;">Minecraft Bedrock</div>
+                                <div style="opacity: 0.8; font-size: 0.9em; margin-top: 5px;">Mobile/Console/Win10</div>
+                            </div>
+                            <div class="server-type-card" onclick="selectServerType('proxy')" id="type-proxy">
+                                <div style="font-size: 3em; margin-bottom: 10px;">🔀</div>
+                                <div style="font-weight: bold; font-size: 1.2em;">Minecraft Proxy</div>
+                                <div style="opacity: 0.8; font-size: 0.9em; margin-top: 5px;">BungeeCord/Velocity</div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="server-main-type" required>
+                    </div>
+
+                    <!-- Nom du serveur -->
+                    <div class="form-group full">
+                        <label>📝 Nom du serveur</label>
                         <input type="text" id="server-name" placeholder="Mon serveur Minecraft" required>
                     </div>
 
-                    <div class="form-group">
-                        <label>Version de Minecraft</label>
-                        <select required id="mc-version" onchange="toggleModLoader()">
+                    <!-- Custom Domain -->
+                    <div class="form-group full">
+                        <label>🌐 Custom Domain</label>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="text" id="custom-domain" placeholder="monserveur" required pattern="[a-zA-Z0-9-]+" style="flex: 1;">
+                            <span style="font-weight: bold; color: #667eea; font-size: 1.1em;">.minecraftcloud</span>
+                        </div>
+                        <small style="opacity: 0.7; display: block; margin-top: 5px;">
+                            Votre serveur sera accessible via : <strong id="domain-preview">votreserveur.minecraftcloud</strong>
+                        </small>
+                    </div>
+
+                    <!-- JAVA ONLY -->
+                    <div id="java-options" style="display: none; grid-column: 1 / -1;">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>📦 Version de Minecraft</label>
+                                <select required id="mc-version" onchange="toggleModLoader()">
+                                    <option value="">Sélectionnez une version</option>
+                                    <optgroup label="🔥 Minecraft 1.21">
+                                        <option value="1.21.4">1.21.4 (Dernière)</option>
+                                        <option value="1.21.3">1.21.3</option>
+                                        <option value="1.21.2">1.21.2</option>
+                                        <option value="1.21.1">1.21.1</option>
+                                        <option value="1.21.0">1.21.0</option>
+                                    </optgroup>
+                                    <optgroup label="📦 Minecraft 1.20">
+                                        <option value="1.20.6">1.20.6</option>
+                                        <option value="1.20.5">1.20.5</option>
+                                        <option value="1.20.4">1.20.4</option>
+                                        <option value="1.20.3">1.20.3</option>
+                                        <option value="1.20.2">1.20.2</option>
+                                        <option value="1.20.1">1.20.1 ⭐</option>
+                                        <option value="1.20.0">1.20.0</option>
+                                    </optgroup>
+                                    <optgroup label="🌟 Minecraft 1.19">
+                                        <option value="1.19.4">1.19.4</option>
+                                        <option value="1.19.3">1.19.3</option>
+                                        <option value="1.19.2">1.19.2 ⭐</option>
+                                        <option value="1.19.1">1.19.1</option>
+                                        <option value="1.19.0">1.19.0</option>
+                                    </optgroup>
+                                    <optgroup label="⛰️ Minecraft 1.18">
+                                        <option value="1.18.2">1.18.2 ⭐</option>
+                                        <option value="1.18.1">1.18.1</option>
+                                        <option value="1.18.0">1.18.0</option>
+                                    </optgroup>
+                                    <optgroup label="🏔️ Minecraft 1.17">
+                                        <option value="1.17.1">1.17.1</option>
+                                        <option value="1.17.0">1.17.0</option>
+                                    </optgroup>
+                                    <optgroup label="🔥 Minecraft 1.16">
+                                        <option value="1.16.5">1.16.5 ⭐⭐⭐</option>
+                                        <option value="1.16.4">1.16.4</option>
+                                        <option value="1.16.3">1.16.3</option>
+                                        <option value="1.16.2">1.16.2</option>
+                                        <option value="1.16.1">1.16.1</option>
+                                        <option value="1.16.0">1.16.0</option>
+                                    </optgroup>
+                                    <optgroup label="🐝 Minecraft 1.15">
+                                        <option value="1.15.2">1.15.2</option>
+                                        <option value="1.15.1">1.15.1</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>⚙️ Type de serveur</label>
+                                <select required id="server-type" onchange="toggleModLoader()">
+                                    <option value="vanilla">Vanilla</option>
+                                    <option value="paper">Paper (Optimisé)</option>
+                                    <option value="spigot">Spigot</option>
+                                    <option value="forge">Forge (Mods)</option>
+                                    <option value="fabric">Fabric (Mods)</option>
+                                    <option value="neoforge">NeoForge (Mods)</option>
+                                    <option value="quilt">Quilt (Mods)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" id="modloader-version-group" style="display: none;">
+                                <label id="modloader-label">Version du Mod Loader</label>
+                                <select id="modloader-version">
+                                    <option value="">Sélectionnez une version</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>🎮 Mode de jeu</label>
+                                <select required id="gamemode">
+                                    <option value="survival">Survie</option>
+                                    <option value="creative">Créatif</option>
+                                    <option value="adventure">Aventure</option>
+                                    <option value="spectator">Spectateur</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BEDROCK ONLY -->
+                    <div id="bedrock-options" style="display: none; grid-column: 1 / -1;">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>📦 Version de Minecraft Bedrock</label>
+                                <select required id="bedrock-version">
+                                    <option value="">Sélectionnez une version</option>
+                                    <option value="1.21.51">1.21.51 (Dernière)</option>
+                                    <option value="1.21.50">1.21.50</option>
+                                    <option value="1.21.44">1.21.44</option>
+                                    <option value="1.21.43">1.21.43</option>
+                                    <option value="1.21.41">1.21.41</option>
+                                    <option value="1.21.40">1.21.40</option>
+                                    <option value="1.21.31">1.21.31</option>
+                                    <option value="1.21.30">1.21.30</option>
+                                    <option value="1.21.20">1.21.20</option>
+                                    <option value="1.21.2">1.21.2</option>
+                                    <option value="1.21.1">1.21.1</option>
+                                    <option value="1.21.0">1.21.0</option>
+                                    <option value="1.20.81">1.20.81</option>
+                                    <option value="1.20.80">1.20.80</option>
+                                    <option value="1.20.73">1.20.73</option>
+                                    <option value="1.20.72">1.20.72</option>
+                                    <option value="1.20.71">1.20.71</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>⚙️ Software</label>
+                                <select required id="bedrock-software">
+                                    <option value="vanilla">Vanilla (Officiel)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>🎮 Mode de jeu</label>
+                                <select required id="bedrock-gamemode">
+                                    <option value="survival">Survie</option>
+                                    <option value="creative">Créatif</option>
+                                    <option value="adventure">Aventure</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PROXY ONLY -->
+                    <div id="proxy-options" style="display: none; grid-column: 1 / -1;">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>🔀 Type de Proxy</label>
+                                <select required id="proxy-type">
+                                    <option value="">Sélectionnez un type</option>
+                                    <option value="bungeecord">BungeeCord</option>
+                                    <option value="velocity">Velocity (Moderne)</option>
+                                    <option value="waterfall">Waterfall (BungeeCord amélioré)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>📦 Version</label>
+                                <select required id="proxy-version">
+                                    <option value="">Sélectionnez une version</option>
+                                    <option value="latest">Dernière version</option>
+                                    <option value="1.20">1.20.x</option>
+                                    <option value="1.19">1.19.x</option>
+                                    <option value="1.18">1.18.x</option>
+                                    <option value="1.17">1.17.x</option>
+                                    <option value="1.16">1.16.x</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group full">
+                        <label>📄 Description du serveur (optionnel)</label>
+                        <textarea id="server-description" placeholder="Décrivez votre serveur..."></textarea>
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <button type="submit" class="btn-primary">🚀 Créer le serveur maintenant</button>
+                </div>
+            </form>
+        </div>
                             <option value="">Sélectionnez une version</option>
                             <optgroup label="🔥 Minecraft 1.21">
                                 <option value="1.21.4">1.21.4 (Dernière)</option>
@@ -1069,6 +1294,65 @@ let selectedPlan = {
     name: '',
     ram: ''
 };
+
+let selectedServerType = ''; // 'java', 'bedrock', 'proxy'
+
+function selectServerType(type) {
+    selectedServerType = type;
+    document.getElementById('server-main-type').value = type;
+    
+    // Mettre à jour visuellement
+    document.querySelectorAll('.server-type-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    document.getElementById(`type-${type}`).classList.add('selected');
+    
+    // Afficher/cacher les options
+    document.getElementById('java-options').style.display = type === 'java' ? 'block' : 'none';
+    document.getElementById('bedrock-options').style.display = type === 'bedrock' ? 'block' : 'none';
+    document.getElementById('proxy-options').style.display = type === 'proxy' ? 'block' : 'none';
+    
+    // Gérer les champs required
+    if (type === 'java') {
+        document.getElementById('mc-version').required = true;
+        document.getElementById('server-type').required = true;
+        document.getElementById('gamemode').required = true;
+        document.getElementById('bedrock-version').required = false;
+        document.getElementById('bedrock-software').required = false;
+        document.getElementById('bedrock-gamemode').required = false;
+        document.getElementById('proxy-type').required = false;
+        document.getElementById('proxy-version').required = false;
+    } else if (type === 'bedrock') {
+        document.getElementById('mc-version').required = false;
+        document.getElementById('server-type').required = false;
+        document.getElementById('gamemode').required = false;
+        document.getElementById('bedrock-version').required = true;
+        document.getElementById('bedrock-software').required = true;
+        document.getElementById('bedrock-gamemode').required = true;
+        document.getElementById('proxy-type').required = false;
+        document.getElementById('proxy-version').required = false;
+    } else if (type === 'proxy') {
+        document.getElementById('mc-version').required = false;
+        document.getElementById('server-type').required = false;
+        document.getElementById('gamemode').required = false;
+        document.getElementById('bedrock-version').required = false;
+        document.getElementById('bedrock-software').required = false;
+        document.getElementById('bedrock-gamemode').required = false;
+        document.getElementById('proxy-type').required = true;
+        document.getElementById('proxy-version').required = true;
+    }
+}
+
+// Mettre à jour le preview du domain
+document.addEventListener('DOMContentLoaded', () => {
+    const domainInput = document.getElementById('custom-domain');
+    if (domainInput) {
+        domainInput.addEventListener('input', () => {
+            const domain = domainInput.value || 'votreserveur';
+            document.getElementById('domain-preview').textContent = `${domain}.minecraftcloud`;
+        });
+    }
+});
 
 function showSection(section) {
     document.getElementById('home-section').style.display = 'none';
